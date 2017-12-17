@@ -1,0 +1,38 @@
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+ext.gradleScripts = "https://raw.githubusercontent.com/hexagonkt/hexagon/$hexagonVersion/gradle"
+
+apply from: "$gradleScripts/kotlin.gradle"
+apply from: "$gradleScripts/service.gradle"
+
+mainClassName = 'com.hexagonkt.todokt.backend.TodoKt'
+applicationDefaultJvmArgs = [
+    '-Xms64M', '-Xmx2G', '-XX:+UseNUMA', '-XX:+UseParallelGC', '-XX:+AggressiveOpts'
+]
+
+defaultTasks 'test'
+
+dependencies {
+    compile ("com.hexagonkt:server_jetty:$hexagonVersion")
+
+    compile("com.hexagonkt:server_jetty:$hexagonVersion")
+    compile("com.hexagonkt:hexagon_rest:$hexagonVersion")
+    compile("ch.qos.logback:logback-classic:$logbackVersion")
+
+    testCompile("com.hexagonkt:port_client:$hexagonVersion")
+}
+
+installDist {
+    dependsOn ':frontend:assemble'
+    doLast {
+        println 'Hi'
+    }
+}
+
+task installFrontend(type: Copy, dependsOn: 'classes') {
+    from "$rootDir/frontend/build/web"
+    into "$buildDir/resources/main/public"
+}

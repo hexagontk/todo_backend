@@ -1,0 +1,7 @@
+
+serviceName : Taska
+
+bindPort : 2010
+bindAddress : 0.0.0.0
+
+database : taska

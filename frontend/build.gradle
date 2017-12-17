@@ -1,0 +1,46 @@
+
+apply plugin: 'kotlin2js'
+
+ext.kotlinxHtmlVersion = '0.6.8'
+
+repositories {
+    jcenter ()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlinVersion"
+    compile "org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion"
+
+    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlinVersion"
+}
+
+compileKotlin2Js {
+    kotlinOptions.metaInfo = true
+    kotlinOptions.sourceMap = true
+}
+
+task assembleWeb(type: Sync, dependsOn: classes) {
+    configurations.compile.each { File file ->
+        from(zipTree(file.absolutePath)) {
+            includeEmptyDirs = false
+            include { FileTreeElement element ->
+                String path = element.path
+                boolean isInResources = path.startsWith('META-INF/resources/')
+                boolean isJs = path.endsWith('.js')
+                isJs && (isInResources || !path.startsWith('META-INF/'))
+            }
+        }
+    }
+
+    from "$buildDir/resources/main"
+
+    from (compileKotlin2Js.destinationDir) {
+        includeEmptyDirs = false
+        include '**/*.js'
+    }
+
+    into "$buildDir/web"
+}
+
+assemble.dependsOn assembleWeb
+
