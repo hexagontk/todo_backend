@@ -4,7 +4,6 @@ import cucumber.api.java8.En
 
 class Steps : En {
     init {
-        Given("foo") {
-        }
+        Given("foo") {}
     }
 }

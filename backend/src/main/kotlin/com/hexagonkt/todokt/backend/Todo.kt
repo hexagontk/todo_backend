@@ -1,6 +1,5 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.rest.crud
 import com.hexagonkt.server.jetty.serve
 import com.hexagonkt.store.mongodb.MongoIdRepository
 import com.hexagonkt.templates.TemplateManager.render
@@ -41,7 +40,5 @@ fun main(vararg args: String) {
             val context = fullContext(locale, emptyMap<String, Any>())
             render(PebbleAdapter, "index.html", locale, context)
         }
-
-        path(crud(store, "tasks"))
     }
 }

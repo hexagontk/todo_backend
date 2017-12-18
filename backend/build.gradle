@@ -11,10 +11,11 @@ ext.cucumberVersion = "2.3.1"
 dependencies {
     compile("com.hexagonkt:server_jetty:$hexagonVersion")
     compile("com.hexagonkt:templates_pebble:$hexagonVersion")
-    compile("com.hexagonkt:hexagon_rest:$hexagonVersion")
+    compile("com.hexagonkt:store_mongodb:$hexagonVersion")
     compile("ch.qos.logback:logback-classic:$logbackVersion")
 
     testCompile("com.hexagonkt:port_client:$hexagonVersion")
+    testCompile("io.cucumber:cucumber-junit:$cucumberVersion")
     testCompile("io.cucumber:cucumber-java8:$cucumberVersion")
 }
 

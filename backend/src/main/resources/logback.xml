@@ -21,6 +21,6 @@
     <appender-ref ref="file" />
   </root>
 
-  <logger name="com.hexagonkt" level="debug" />
-  <logger name="com.hexagonkt.todokt" level="debug" />
+  <logger name="com.hexagonkt" level="trace" />
+  <logger name="com.hexagonkt.todokt" level="trace" />
 </configuration>

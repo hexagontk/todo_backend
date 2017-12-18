@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="{{lang}}">
 
 <head>
   {% include "templates/head.html" %}
@@ -10,9 +10,7 @@
 <body>
   {% include "templates/navbar.html" %}
 
-  {% block content %}
-  Content
-  {% endblock %}
+  {% block content %} Content {% endblock %}
 
   {% include "templates/footer.html" %}
   {% include "templates/scripts.html" %}
