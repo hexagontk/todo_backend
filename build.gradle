@@ -1,8 +1,10 @@
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.2.0' apply false
-    id 'jacoco'
+    // Not applied because it will only be used in child modules
+    id 'org.jetbrains.kotlin.jvm' version '1.2.10' apply false
 }
+
+defaultTasks 'test'
 
 task clean(type: Delete) {
     delete 'build', '.gradle', 'log', 'out'
@@ -12,17 +14,3 @@ task clean(type: Delete) {
         fileTree(rootDir) { include '**/*.hprof' }
     )
 }
-
-task jacocoReport(dependsOn: getTasksByName ('jacocoTestReport', true), type: JacocoReport) {
-    executionData = files(fileTree(rootDir.absolutePath).include("**/build/jacoco/test.exec"))
-
-    subprojects.each {
-        sourceSets it.sourceSets.main
-    }
-
-    reports {
-        html.enabled = true
-        xml.enabled = true
-    }
-}
-

@@ -1,7 +1,7 @@
 
-serviceName : Taska
+serviceName : Todo
 
 bindPort : 2010
 bindAddress : 0.0.0.0
 
-database : taska
+database : todo
