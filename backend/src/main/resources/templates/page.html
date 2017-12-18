@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  {% include "templates/head.html" %}
+</head>
+
+<body>
+  {% include "templates/navbar.html" %}
+
+  {% block content %}
+  Content
+  {% endblock %}
+
+  {% include "templates/footer.html" %}
+  {% include "templates/scripts.html" %}
+</body>
+
+</html>

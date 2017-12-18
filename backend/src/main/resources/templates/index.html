@@ -1,0 +1,68 @@
+
+{% extends "templates/page.html" %}
+
+{% block content %}
+  <section id="features">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <h2 class="section-heading">Features</h2>
+          <h3 class="section-subheading text-muted">Hexagon's high-level features.</h3>
+        </div>
+      </div>
+
+      <!-- First row of features -->
+      <div id="firstRow" class="row feature-row">
+        <div class="col-md-4">
+          <div class="link">
+            <a href="/quick_start.html">
+              <div class="feature-icon">
+                <i class="fa fa-smile-o fa-4" aria-hidden="true"></i>
+              </div>
+              <div class="feature-text feature-title">Simple to Use</div>
+              <div class="feature-text">
+                Hexagon is focused in allowing you to use the features you use the most in your
+                daily coding in the easiest way.
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="link">
+            <a href="https://github.com/hexagonkt/hexagon/blob/master/contributing.md">
+              <div class="feature-icon">
+                <i class="fa fa-keyboard-o fa-4" aria-hidden="true"></i>
+              </div>
+              <div class="feature-text feature-title">Easy to Hack</div>
+              <div class="feature-text">
+                The library is done to be lean and simple so you can tweak it to suit your needs
+                instead relying on third parties.
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="link">
+            <a href="/guides.html">
+              <div class="feature-icon">
+                <i class="fa fa-plug fa-4" aria-hidden="true"></i>
+              </div>
+              <div class="feature-text feature-title">Pluggable Adapters</div>
+              <div class="feature-text">
+                Adding an adapter is just implementing the port's interface. You can code your own
+                adapters from scratch or tune the existing ones.
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features button -->
+      <div class="row">
+        <div class="col-md-12 features-button">
+          <a href="/quick_start.html" class="btn btn-default">See more</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

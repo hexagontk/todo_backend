@@ -19,6 +19,10 @@ compileKotlin2Js {
     kotlinOptions.sourceMap = true
 }
 
+clean {
+    delete 'build', 'out'
+}
+
 task assembleWeb(type: Sync, dependsOn: classes) {
     configurations.compile.each { File file ->
         from(zipTree(file.absolutePath)) {

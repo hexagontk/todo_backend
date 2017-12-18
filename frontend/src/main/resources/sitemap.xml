@@ -8,7 +8,7 @@
     http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <url>
-    <loc>http://example.com/index.html</loc>
+    <loc>http://example.com</loc>
     <lastmod>2017-12-17</lastmod>
   </url>
 </urlset>

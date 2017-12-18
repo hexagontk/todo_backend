@@ -6,12 +6,16 @@ apply from: "$gradleScripts/service.gradle"
 mainClassName = 'com.hexagonkt.todokt.backend.TodoKt'
 applicationDefaultJvmArgs = [ '-Xms64M', '-Xmx2G', '-XX:+UseNUMA', '-XX:+UseParallelGC' ]
 
+ext.cucumberVersion = "2.3.1"
+
 dependencies {
     compile("com.hexagonkt:server_jetty:$hexagonVersion")
+    compile("com.hexagonkt:templates_pebble:$hexagonVersion")
     compile("com.hexagonkt:hexagon_rest:$hexagonVersion")
     compile("ch.qos.logback:logback-classic:$logbackVersion")
 
     testCompile("com.hexagonkt:port_client:$hexagonVersion")
+    testCompile("io.cucumber:cucumber-java8:$cucumberVersion")
 }
 
 // Compiles the frontend module before processing resources and includes the output in the classpath

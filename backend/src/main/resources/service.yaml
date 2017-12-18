@@ -1,5 +1,19 @@
 
 serviceName : Todo
+serviceDescription : The atoms of your platform
+serviceLongDescription : >
+  Hexagon is a microservices library written in Kotlin. Its purpose is to ease the building of
+  services (Web applications, APIs or queue consumers) that run inside a cloud platform
+
+serviceUrl : http://hexagonkt.com
+cdn : http://cdnjs.cloudflare.com/ajax/libs
+
+authorName : Juanjo Aguililla
+httpKeywords : Hexagon, Kotlin, Example, MongoDB, JVM, Web
+httpGenerator : Hexagon
+themeColor : "#135AA1"
+
+twitterAccount : "@hexagon_kt"
 
 bindPort : 2010
 bindAddress : 0.0.0.0
