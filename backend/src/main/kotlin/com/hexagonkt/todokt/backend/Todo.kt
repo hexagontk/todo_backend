@@ -40,5 +40,11 @@ fun main(vararg args: String) {
             val context = fullContext(locale, emptyMap<String, Any>())
             render(PebbleAdapter, "index.html", locale, context)
         }
+
+        path("/tasks") {
+            get {}
+            post {}
+            delete {}
+        }
     }
 }
