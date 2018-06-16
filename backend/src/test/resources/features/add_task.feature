@@ -1,15 +1,14 @@
 
-@Task
-Feature:
-  Adding a task records it in the database
+@Backend
+Feature: Adding a task using the API records it in the database
 
-  Scenario Outline: Change team users
-    Given an accepted lead
-     When a <userType> is <userAction> to a team
-     Then notifies partners via webhook
-      And a lead event is recorded
-      And lead's quota is updated
-      And partner licenses are <licensesAction>
+  Background:
+    Given an instance of
+
+  Scenario Outline: Add valid task
+    Given a valid task
+     When a POST request to the API is made
+     Then the task can be fetched back from the API
 
     Examples:
       | userType | userAction | licensesAction |
