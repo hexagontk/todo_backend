@@ -1,7 +1,7 @@
 package com.hexagonkt.todokt.backend
 
 import com.hexagonkt.server.jetty.serve
-import com.hexagonkt.store.mongodb.MongoIdRepository
+import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagonkt.templates.TemplateManager.render
 import com.hexagonkt.templates.pebble.PebbleAdapter
 import com.hexagonkt.todokt.backend.TaskPriority.NORMAL
@@ -27,7 +27,7 @@ data class Task(
 )
 
 /** Store for tasks. */
-val store = MongoIdRepository(Task::class, Task::code)
+val store = MongoDbStore(Task::class, Task::code, "")
 
 fun main(vararg args: String) {
     serve {
