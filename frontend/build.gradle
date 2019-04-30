@@ -1,10 +1,10 @@
 
-apply plugin: 'kotlin2js'
+apply(plugin: "kotlin2js")
 
-ext.kotlinxHtmlVersion = '0.6.8'
+ext.kotlinxHtmlVersion = "0.6.12"
 
 dependencies {
-    compile "org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion"
+    compile("org.jetbrains.kotlinx:kotlinx-html-js:$kotlinxHtmlVersion")
 }
 
-apply from: "$gradleScripts/kotlin_js.gradle"
+apply(from: "$gradleScripts/kotlin_js.gradle")

@@ -6,15 +6,15 @@ apply from: "$gradleScripts/service.gradle"
 mainClassName = 'com.hexagonkt.todokt.backend.TodoKt'
 applicationDefaultJvmArgs = [ '-Xms64M', '-Xmx2G', '-XX:+UseNUMA', '-XX:+UseParallelGC' ]
 
-ext.cucumberVersion = "2.3.1"
+ext.cucumberVersion = "4.3.0"
 
 dependencies {
-    compile("com.hexagonkt:server_jetty:$hexagonVersion")
+    compile("com.hexagonkt:hexagon_web:$hexagonVersion")
+    compile("com.hexagonkt:http_server_jetty:$hexagonVersion")
     compile("com.hexagonkt:templates_pebble:$hexagonVersion")
     compile("com.hexagonkt:store_mongodb:$hexagonVersion")
-    compile("ch.qos.logback:logback-classic:$logbackVersion")
 
-    testCompile("com.hexagonkt:port_client:$hexagonVersion")
+    testCompile("com.hexagonkt:port_http_client:$hexagonVersion")
     testCompile("io.cucumber:cucumber-junit:$cucumberVersion")
     testCompile("io.cucumber:cucumber-java8:$cucumberVersion")
 }

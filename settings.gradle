@@ -1,4 +1,13 @@
 
-rootProject.name = name
+rootProject.name = "hextodo"
 
-include 'backend', 'frontend'
+gradle.rootProject {
+
+    allprojects {
+        version = "0.1.0"
+        group = "com.hexagonkt"
+        description = "Task Manager"
+    }
+}
+
+include("backend", "frontend")
