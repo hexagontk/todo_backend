@@ -1,10 +1,10 @@
 
 // Kotlin build configuration is taken from a build script in other repository
-apply from: "$gradleScripts/kotlin.gradle"
-apply from: "$gradleScripts/service.gradle"
+apply(from: "$gradleScripts/kotlin.gradle")
+apply(from: "$gradleScripts/service.gradle")
 
-mainClassName = 'com.hexagonkt.todokt.backend.TodoKt'
-applicationDefaultJvmArgs = [ '-Xms64M', '-Xmx2G', '-XX:+UseNUMA', '-XX:+UseParallelGC' ]
+mainClassName = "com.hexagonkt.todokt.backend.TodoKt"
+applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UseParallelGC" ]
 
 ext.cucumberVersion = "4.3.0"
 
@@ -21,16 +21,17 @@ dependencies {
 
 // Compiles the frontend module before processing resources and includes the output in the classpath
 processResources {
-    dependsOn ':frontend:assemble'
+    dependsOn(":frontend:assemble")
+    
     doLast {
         copy {
-            from "$rootDir/frontend/build/web"
-            into "$buildDir/resources/main/public"
+            from("$rootDir/frontend/build/web")
+            into("$buildDir/resources/main/public")
         }
         // Copy generated JS also to Idea output (required to run the project inside the IDE)
         copy {
-            from "$rootDir/frontend/build/web"
-            into "$rootDir/backend/out/production/resources/public"
+            from("$rootDir/frontend/build/web")
+            into("$rootDir/backend/out/production/resources/public")
         }
     }
 }
