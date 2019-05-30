@@ -7,7 +7,7 @@ plugins {
 defaultTasks("test")
 
 task clean(type: Delete) {
-    delete("build", ".gradle", "log", "out")
+    delete("build", "log", "out")
 
     delete(
         fileTree(rootDir) { include("**/*.log") },
