@@ -1,5 +1,5 @@
 
-rootProject.name = "hextodo"
+rootProject.name = "todo_backend"
 
 gradle.rootProject {
 
@@ -10,4 +10,3 @@ gradle.rootProject {
     }
 }
 
-include("backend", "frontend")

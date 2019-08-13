@@ -1,16 +1,27 @@
 
 plugins {
-    // Not applied because it will only be used in child modules
-    id "org.jetbrains.kotlin.jvm" version "1.3.31" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.3.41"
 }
+
+// Kotlin build configuration is taken from a build script in other repository
+apply(from: "$gradleScripts/kotlin.gradle")
+apply(from: "$gradleScripts/service.gradle")
 
 defaultTasks("test")
 
-task clean(type: Delete) {
-    delete("build", "log", "out")
+mainClassName = "com.hexagonkt.todokt.backend.TodoKt"
+applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UseParallelGC" ]
 
-    delete(
-        fileTree(rootDir) { include("**/*.log") },
-        fileTree(rootDir) { include("**/*.hprof") }
-    )
+ext.cucumberVersion = "4.3.0"
+
+dependencies {
+    compile("com.hexagonkt:hexagon_web:$hexagonVersion")
+    compile("com.hexagonkt:http_server_jetty:$hexagonVersion")
+    compile("com.hexagonkt:templates_pebble:$hexagonVersion")
+    compile("com.hexagonkt:store_mongodb:$hexagonVersion")
+
+    testCompile("com.hexagonkt:port_http_client:$hexagonVersion")
+    testCompile("io.cucumber:cucumber-junit:$cucumberVersion")
+    testCompile("io.cucumber:cucumber-java8:$cucumberVersion")
 }
+
