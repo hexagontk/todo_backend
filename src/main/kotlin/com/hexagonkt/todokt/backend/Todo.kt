@@ -2,6 +2,8 @@ package com.hexagonkt.todokt.backend
 
 import com.hexagonkt.http.server.Server
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
+import com.hexagonkt.store.IndexOrder
+import com.hexagonkt.store.Store
 import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagonkt.templates.pebble.PebbleAdapter
 import com.hexagonkt.todokt.backend.TaskPriority.NORMAL
@@ -41,6 +43,7 @@ fun main(vararg args: String) {
         }
 
         path("/tasks") {
+            cors()
             get {}
             post {}
             delete {}
