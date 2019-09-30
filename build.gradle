@@ -1,24 +1,25 @@
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.41"
+    id "org.jetbrains.kotlin.jvm" version "1.3.50"
 }
 
-// Kotlin build configuration is taken from a build script in other repository
+// Build configuration is taken from helper scripts in Hexagon's repository
 apply(from: "$gradleScripts/kotlin.gradle")
 apply(from: "$gradleScripts/service.gradle")
+apply(from: "$gradleScripts/junit.gradle")
 
 defaultTasks("test")
 
 mainClassName = "com.hexagonkt.todokt.backend.TodoKt"
 applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UseParallelGC" ]
 
-ext.cucumberVersion = "4.3.0"
+ext.cucumberVersion = "4.7.2"
 
 dependencies {
-    compile("com.hexagonkt:hexagon_web:$hexagonVersion")
     compile("com.hexagonkt:http_server_jetty:$hexagonVersion")
-    compile("com.hexagonkt:templates_pebble:$hexagonVersion")
     compile("com.hexagonkt:store_mongodb:$hexagonVersion")
+    compile("com.hexagonkt:templates_pebble:$hexagonVersion")
+    compile("com.hexagonkt:hexagon_web:$hexagonVersion")
 
     testCompile("com.hexagonkt:port_http_client:$hexagonVersion")
     testCompile("io.cucumber:cucumber-junit:$cucumberVersion")
