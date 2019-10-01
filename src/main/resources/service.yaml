@@ -11,7 +11,7 @@ serviceLongDescription : >
 cdn : http://cdnjs.cloudflare.com/ajax/libs
 bootstrapVersion : "3.3.7"
 
-authorName : Juanjo Aguililla
+authorName : Author
 httpKeywords : Hexagon, Kotlin, Example, MongoDB, JVM, Web
 httpGenerator : Hexagon
 themeColor : "#135AA1"
@@ -23,4 +23,4 @@ bindPort : 2010
 bindAddress : 0.0.0.0
 
 # Storage
-database : todo
+mongoDbUrl: mongodb://localhost:27017/todo
