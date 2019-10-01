@@ -1,15 +1,21 @@
 package com.hexagonkt.todokt.backend
 
+import com.hexagonkt.helpers.CodedException
+import com.hexagonkt.helpers.Jvm.name
 import com.hexagonkt.helpers.Resource
 import com.hexagonkt.http.get
+import com.hexagonkt.http.server.Call
 import com.hexagonkt.http.server.Server
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
+import com.hexagonkt.serialization.Json
 import com.hexagonkt.settings.SettingsManager.requireSetting
 import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagonkt.templates.pebble.PebbleAdapter
 import com.hexagonkt.todokt.backend.TaskPriority.NORMAL
 import com.hexagonkt.web.template
+import sun.nio.cs.UTF_32
 import java.time.LocalDateTime
+import kotlin.text.Charsets.UTF_8
 
 /**
  * Task priority.
@@ -20,10 +26,9 @@ enum class TaskPriority { HIGH, NORMAL, LOW }
  * Task entity.
  */
 data class Task(
-    val code: String,
+    val id: Long,
     val name: String,
     val labels: List<String> = emptyList(),
-    val context: List<String> = emptyList(),
     val priority: TaskPriority = NORMAL,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val completedAt: LocalDateTime? = null,
@@ -31,7 +36,7 @@ data class Task(
 )
 
 /** Store for tasks. */
-val store = MongoDbStore(Task::class, Task::code, requireSetting("mongoDbUrl") as String)
+val store = MongoDbStore(Task::class, Task::id, requireSetting("mongoDbUrl") as String)
 
 fun main(vararg args: String) {
     val server = Server(JettyServletAdapter()) {
@@ -45,11 +50,56 @@ fun main(vararg args: String) {
 
         path("/tasks") {
             cors()
-            get { store.findAll() }
-            post {}
-            delete {}
+
+            get("/") {
+                path("/") {
+                    ok(store.findAll(), charset = UTF_8)
+                }
+            }
+
+            get("/{id}") {
+                val id = request.pathParameters["id"].toLong()
+
+                val task = store.findOne(id) ?: halt(404, "Task with id $id not found")
+
+
+                ok(task, charset = UTF_8)
+
+            }
+
+            post {
+                val taskCreationRequest = request.body<TaskCreationRequestRoot>().task
+                val task = Task(
+                    id       = generateId(),
+                    name     = taskCreationRequest.name,
+                    labels   = taskCreationRequest.labels ?: emptyList(),
+                    priority = taskCreationRequest.priority ?: NORMAL
+                )
+
+                val taskResponse = TaskCreationResponseRoot(
+                    TaskCreationResponse(
+                        id          = task.id,
+                        name        = task.name,
+                        labels      = task.labels,
+                        priority    = task.priority,
+                        createdAt   = task.createdAt
+                    )
+                )
+
+                ok(taskResponse, charset = UTF_8)
+
+                store.saveOne(task)
+            }
+            delete { store.drop() }
         }
+
+
+        // Todo: Error handling
     }
 
     server.start()
+}
+
+internal fun generateId(): Long {
+    return 1
 }
