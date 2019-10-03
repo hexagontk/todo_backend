@@ -1,7 +1,5 @@
 package com.hexagonkt.todokt.backend
 
-import java.time.LocalDateTime
-
 data class TaskRetrievalResponse(
     val url: String,
     val title: String,
