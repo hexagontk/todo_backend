@@ -2,26 +2,35 @@ package com.hexagonkt.todokt.backend
 
 import java.time.LocalDateTime
 
-data class TaskResponse(
-    val name: String
+data class TaskRetrievalResponse(
+    val url: String,
+    val title: String,
+    val order: Int?,
+    val completed: Boolean?
+)
+
+data class TaskRetrievalResponseRoot(val task: TaskRetrievalResponse)
+
+data class TasksRetrievalResponse(
+    val tasks: List<TaskRetrievalResponse>
 )
 
 
 data class TaskCreationRequest(
-    val name: String,
-    val labels: List<String>?,
-    val priority: TaskPriority?
+    val title: String,
+    val order: Int?
 )
 
 data class TaskCreationRequestRoot(val task: TaskCreationRequest)
 
-data class TaskCreationResponse(
-    val id: Long,
-    val name: String,
-    val labels: List<String>,
-    val priority: TaskPriority?,
-    val createdAt: LocalDateTime
+data class TaskUpdateRequest(
+    val title: String?,
+    val order: Int?,
+    val completed: Boolean?
 )
 
-data class TaskCreationResponseRoot(val taskResponse: TaskCreationResponse)
+data class TaskUpdateRequestRoot(val task: TaskUpdateRequest)
+
+
+data class ErrorResponse(val errors: List<String> = listOf("Unknown error"))
 

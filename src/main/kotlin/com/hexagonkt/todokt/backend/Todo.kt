@@ -1,8 +1,6 @@
 package com.hexagonkt.todokt.backend
 
 import com.hexagonkt.helpers.CodedException
-import com.hexagonkt.helpers.Jvm.name
-import com.hexagonkt.helpers.Resource
 import com.hexagonkt.http.get
 import com.hexagonkt.http.server.Call
 import com.hexagonkt.http.server.Server
@@ -11,28 +9,22 @@ import com.hexagonkt.serialization.Json
 import com.hexagonkt.settings.SettingsManager.requireSetting
 import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagonkt.templates.pebble.PebbleAdapter
-import com.hexagonkt.todokt.backend.TaskPriority.NORMAL
 import com.hexagonkt.web.template
-import sun.nio.cs.UTF_32
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.text.Charsets.UTF_8
 
 /**
- * Task priority.
- */
-enum class TaskPriority { HIGH, NORMAL, LOW }
-
-/**
  * Task entity.
+ *
+ * Todo: Update this to follow the spec. Have url, title, completed, order
  */
 data class Task(
-    val id: Long,
-    val name: String,
-    val labels: List<String> = emptyList(),
-    val priority: TaskPriority = NORMAL,
+    val id: String,
+    val title: String,
+    val order: Int? = null,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val completedAt: LocalDateTime? = null,
-    val deletedAt: LocalDateTime? = null
+    val completedAt: LocalDateTime? = null
 )
 
 /** Store for tasks. */
@@ -51,19 +43,27 @@ fun main(vararg args: String) {
         path("/tasks") {
             cors()
 
-            get("/") {
-                path("/") {
-                    ok(store.findAll(), charset = UTF_8)
-                }
+            get {
+                val tasks = store.findAll()
+
+                val taskResponse = TasksRetrievalResponse(
+                    tasks.map{
+                        TaskRetrievalResponse(
+                            url         = it.id,
+                            title       = it.title,
+                            order       = it.order,
+                            completed   = it.completedAt?.isBefore(LocalDateTime.now())
+                        )
+                    }
+                )
+
+                ok(taskResponse, Json, UTF_8)
             }
 
             get("/{id}") {
-                val id = request.pathParameters["id"].toLong()
+                val id = request.pathParameters["id"]
 
-                val task = store.findOne(id) ?: halt(404, "Task with id $id not found")
-
-
-                ok(task, charset = UTF_8)
+                getTask(id)
 
             }
 
@@ -71,35 +71,75 @@ fun main(vararg args: String) {
                 val taskCreationRequest = request.body<TaskCreationRequestRoot>().task
                 val task = Task(
                     id       = generateId(),
-                    name     = taskCreationRequest.name,
-                    labels   = taskCreationRequest.labels ?: emptyList(),
-                    priority = taskCreationRequest.priority ?: NORMAL
+                    title    = taskCreationRequest.title
                 )
-
-                val taskResponse = TaskCreationResponseRoot(
-                    TaskCreationResponse(
-                        id          = task.id,
-                        name        = task.name,
-                        labels      = task.labels,
-                        priority    = task.priority,
-                        createdAt   = task.createdAt
-                    )
-                )
-
-                ok(taskResponse, charset = UTF_8)
 
                 store.saveOne(task)
+
+                getTask(task.id)
             }
-            delete { store.drop() }
+
+            patch("/{id}") {
+                val id = request.pathParameters["id"]
+                val taskUpdateRequest = request.body<TaskUpdateRequestRoot>().task
+
+                val task = store.findOne(id) ?: halt(404, "Task with id $id not found")
+
+                val updates = mapOf(
+                    TaskUpdateRequest::title.name to taskUpdateRequest.title,
+                    TaskUpdateRequest::order.name to taskUpdateRequest.order,
+                    TaskUpdateRequest::completed.name to taskUpdateRequest.completed?.let {
+                        if(it && task.completedAt == null) LocalDateTime.now()
+                        else task.completedAt
+                    }
+                )
+
+                if (store.updateOne(id, updates)) getTask(id)
+                else halt(400, "Unable to update task with id $id")
+            }
+
+
+            delete {
+                store.drop()
+            }
         }
 
 
-        // Todo: Error handling
+        setOf(401, 403, 404, 500).forEach { code ->
+            error(code) { statusCodeHandler(it) }
+        }
     }
 
     server.start()
 }
 
-internal fun generateId(): Long {
-    return 1
+internal fun generateId(): String {
+    return UUID.randomUUID().toString()
+}
+
+internal fun Call.getTask(id: String) {
+    val task = store.findOne(id) ?: halt(404, "Task with id $id not found")
+
+    val taskResponse = TaskRetrievalResponseRoot(
+        TaskRetrievalResponse(
+            url         = task.id,
+            title       = task.title,
+            order       = task.order,
+            completed   = task.completedAt?.isBefore(LocalDateTime.now())
+        )
+    )
+
+    ok(taskResponse, Json, UTF_8)
+}
+
+internal fun Call.statusCodeHandler(exception: CodedException) {
+    @Suppress("MoveVariableDeclarationIntoWhen") // Required because response.body is an expression
+    val body = response.body
+
+    val messages = when (body) {
+        is List<*> -> body.mapNotNull { it?.toString() }
+        else -> listOf(exception.message ?: exception::class.java.name)
+    }
+
+    send(exception.code, ErrorResponse(messages), Json, UTF_8)
 }
