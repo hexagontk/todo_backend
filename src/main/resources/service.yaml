@@ -1,7 +1,7 @@
 
 # Service
 serviceName : Todo
-serviceUrl : http://hexagonkt.com
+serviceUrl : http://localhost:2010
 serviceDescription : A Todo Backend with Hexagon
 serviceLongDescription : >
   A Todo API created for http://www.todobackend.com/index.html to

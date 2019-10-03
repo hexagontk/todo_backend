@@ -7,20 +7,9 @@ import com.hexagonkt.http.server.jetty.JettyServletAdapter
 import com.hexagonkt.serialization.Json
 import com.hexagonkt.settings.SettingsManager.requireSetting
 import com.hexagonkt.store.mongodb.MongoDbStore
-import java.time.LocalDateTime
+import com.hexagonkt.todokt.backend.entities.Task
 import java.util.*
 import kotlin.text.Charsets.UTF_8
-
-/**
- * Task entity.
- */
-data class Task(
-    val id: String,
-    val title: String,
-    val order: Int? = null,
-    val createdAt: LocalDateTime = LocalDateTime.now(),
-    val completed: Boolean? = null
-)
 
 /** Store for tasks. */
 val store = MongoDbStore(Task::class, Task::id, requireSetting("mongoDbUrl") as String)
@@ -37,7 +26,7 @@ fun main(vararg args: String) {
                 val taskResponse = TasksRetrievalResponse(
                     tasks.map{
                         TaskRetrievalResponse(
-                            url         = it.id,
+                            url         = it.url,
                             title       = it.title,
                             order       = it.order,
                             completed   = it.completed
@@ -106,7 +95,7 @@ internal fun Call.getTask(id: String) {
 
     val taskResponse = TaskRetrievalResponseRoot(
         TaskRetrievalResponse(
-            url         = task.id,
+            url         = task.url,
             title       = task.title,
             order       = task.order,
             completed   = task.completed

@@ -1,17 +1,12 @@
 
 # Todo
 
-Sample application
+Todo backend example for [Todo Backend](http://www.todobackend.com/index.html) using Hexagon.
 
-# Modules
+### Build
 
-## Backend
 
-Depends on the frontend and includes its output to the resources in order to serve The main page
-with the Frontend JS.
+### Deploy
 
-## Frontend
-
-# Build
-
-# Deploy
+Set the environment variable `SERVICE_serviceURL` to whatever your host is 
+to generate the correct url for tasks.
