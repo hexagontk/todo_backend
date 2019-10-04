@@ -45,7 +45,7 @@ fun main(vararg args: String) {
             }
 
             post {
-                val taskCreationRequest = request.body<TaskCreationRequestRoot>().task
+                val taskCreationRequest = request.body<TaskCreationRequest>()
                 val task = Task(
                     id       = generateId(),
                     title    = taskCreationRequest.title
@@ -58,7 +58,7 @@ fun main(vararg args: String) {
 
             patch("/{id}") {
                 val id = request.pathParameters["id"]
-                val taskUpdateRequest = request.body<TaskUpdateRequestRoot>().task
+                val taskUpdateRequest = request.body<TaskUpdateRequest>()
 
                 store.findOne(id) ?: halt(404, "Task with id $id not found")
 
@@ -93,13 +93,11 @@ internal fun generateId(): String {
 internal fun Call.getTask(id: String) {
     val task = store.findOne(id) ?: halt(404, "Task with id $id not found")
 
-    val taskResponse = TaskRetrievalResponseRoot(
-        TaskRetrievalResponse(
+    val taskResponse = TaskRetrievalResponse(
             url         = task.url,
             title       = task.title,
             order       = task.order,
             completed   = task.completed
-        )
     )
 
     ok(taskResponse, Json, UTF_8)
