@@ -26,16 +26,14 @@ fun main(vararg args: String) {
             get {
                 val tasks = store.findAll()
 
-                val taskResponse = TasksRetrievalResponse(
-                    tasks.map{
-                        TaskRetrievalResponse(
-                            url         = it.url,
-                            title       = it.title,
-                            order       = it.order,
-                            completed   = it.completed
-                        )
-                    }
-                )
+                val taskResponse =  tasks.map{
+                    TaskRetrievalResponse(
+                        url         = it.url,
+                        title       = it.title,
+                        order       = it.order,
+                        completed   = it.completed
+                    )
+                }
 
                 ok(taskResponse, Json, UTF_8)
             }
@@ -77,6 +75,7 @@ fun main(vararg args: String) {
 
             delete {
                 store.drop()
+                ok()
             }
         }
 
