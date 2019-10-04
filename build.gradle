@@ -10,19 +10,16 @@ apply(from: "$gradleScripts/junit.gradle")
 
 defaultTasks("test")
 
-mainClassName = "com.hexagonkt.todokt.backend.TodoKt"
+mainClassName = "com.hexagonkt.todokt.backend.ServerKt"
 applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UseParallelGC" ]
-
-ext.cucumberVersion = "4.7.2"
 
 dependencies {
     compile("com.hexagonkt:http_server_jetty:$hexagonVersion")
     compile("com.hexagonkt:store_mongodb:$hexagonVersion")
-    compile("com.hexagonkt:templates_pebble:$hexagonVersion")
     compile("com.hexagonkt:hexagon_web:$hexagonVersion")
 
     testCompile("com.hexagonkt:port_http_client:$hexagonVersion")
-    testCompile("io.cucumber:cucumber-junit:$cucumberVersion")
-    testCompile("io.cucumber:cucumber-java8:$cucumberVersion")
 }
 
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
