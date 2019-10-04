@@ -17,8 +17,11 @@ val store = MongoDbStore(Task::class, Task::id, requireSetting("mongoDbUrl") as 
 fun main(vararg args: String) {
     val server = Server(JettyServletAdapter()) {
 
+        cors()
+
+        options("/*") { }
+
         path("/tasks") {
-            cors()
 
             get {
                 val tasks = store.findAll()
