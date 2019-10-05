@@ -26,12 +26,12 @@ fun main(vararg args: String) {
             get {
                 val tasks = store.findAll()
 
-                val taskResponse =  tasks.map{
+                val taskResponse = tasks.map {
                     TaskRetrievalResponse(
-                        url         = it.url,
-                        title       = it.title,
-                        order       = it.order,
-                        completed   = it.completed
+                        url = it.url,
+                        title = it.title,
+                        order = it.order,
+                        completed = it.completed
                     )
                 }
 
@@ -48,9 +48,9 @@ fun main(vararg args: String) {
             post {
                 val taskCreationRequest = request.body<TaskCreationRequest>()
                 val task = Task(
-                    id       = generateId(),
-                    title    = taskCreationRequest.title,
-                    order    = taskCreationRequest.order
+                    id = generateId(),
+                    title = taskCreationRequest.title,
+                    order = taskCreationRequest.order
                 )
 
                 store.saveOne(task)
@@ -84,14 +84,9 @@ fun main(vararg args: String) {
 
                 store.findOne(id) ?: halt(404, "Task with id $id not found")
 
-                if(store.deleteOne(id)) ok()
+                if (store.deleteOne(id)) ok()
                 else halt(400, "Unable to delete task with id $id")
             }
-        }
-
-
-        setOf(401, 403, 404, 500).forEach { code ->
-            error(code) { statusCodeHandler(it) }
         }
     }
 
@@ -114,22 +109,3 @@ internal fun Call.getTask(id: String) {
 
     ok(taskResponse, Json, UTF_8)
 }
-
-internal fun Call.statusCodeHandler(exception: CodedException) {
-    @Suppress("MoveVariableDeclarationIntoWhen") // Required because response.body is an expression
-    val body = response.body
-
-    val messages = when (body) {
-        is List<*> -> body.mapNotNull { it?.toString() }
-        else -> listOf(exception.message ?: exception::class.java.name)
-    }
-
-    send(exception.code, ErrorResponse(messages), Json, UTF_8)
-}
-
-/**
- * TODO:
- * Clean up parsing of objects
- * Add tests -> Abstract out the store
- * Add proper error handling
- */
