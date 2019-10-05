@@ -49,7 +49,8 @@ fun main(vararg args: String) {
                 val taskCreationRequest = request.body<TaskCreationRequest>()
                 val task = Task(
                     id       = generateId(),
-                    title    = taskCreationRequest.title
+                    title    = taskCreationRequest.title,
+                    order    = taskCreationRequest.order
                 )
 
                 store.saveOne(task)
@@ -76,6 +77,15 @@ fun main(vararg args: String) {
             delete {
                 store.drop()
                 ok()
+            }
+
+            delete("/{id}") {
+                val id = request.pathParameters["id"]
+
+                store.findOne(id) ?: halt(404, "Task with id $id not found")
+
+                if(store.deleteOne(id)) ok()
+                else halt(400, "Unable to delete task with id $id")
             }
         }
 
