@@ -1,3 +1,4 @@
+language: java
 deploy:
   provider: heroku
   app: todo-backend-hexagonkt
