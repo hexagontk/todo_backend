@@ -126,3 +126,10 @@ internal fun Call.statusCodeHandler(exception: CodedException) {
 
     send(exception.code, ErrorResponse(messages), Json, UTF_8)
 }
+
+/**
+ * TODO:
+ * Clean up parsing of objects
+ * Add tests -> Abstract out the store
+ * Add proper error handling
+ */
