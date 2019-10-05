@@ -10,7 +10,7 @@ apply(from: "$gradleScripts/junit.gradle")
 
 defaultTasks("test")
 
-mainClassName = "com.hexagonkt.todokt.backend.ServerKt"
+mainClassName = "com.hexagonkt.todokt.backend.ApplicationKt"
 applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UseParallelGC" ]
 
 dependencies {

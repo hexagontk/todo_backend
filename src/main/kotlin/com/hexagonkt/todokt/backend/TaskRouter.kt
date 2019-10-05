@@ -1,110 +1,102 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.helpers.CodedException
 import com.hexagonkt.http.server.Call
-import com.hexagonkt.http.server.Server
-import com.hexagonkt.http.server.jetty.JettyServletAdapter
+import com.hexagonkt.http.server.Router
 import com.hexagonkt.serialization.Json
-import com.hexagonkt.settings.SettingsManager.requireSetting
-import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagonkt.todokt.backend.entities.Task
+import com.hexagonkt.todokt.backend.stores.TaskStore
 import java.util.*
 import kotlin.text.Charsets.UTF_8
 
-/** Store for tasks. */
-val store = MongoDbStore(Task::class, Task::id, requireSetting("mongoDbUrl") as String)
 
-fun main(vararg args: String) {
-    val server = Server(JettyServletAdapter()) {
+internal val router = Router {
 
-        cors()
+    val store = injector.inject<TaskStore>(Task::class)
 
-        options("/*") { }
+    cors()
 
-        path("/tasks") {
+    options("/*") { }
 
-            get {
-                val tasks = store.findAll()
+    path("/tasks") {
 
-                val taskResponse = tasks.map {
-                    TaskRetrievalResponse(
-                        url = it.url,
-                        title = it.title,
-                        order = it.order,
-                        completed = it.completed
-                    )
-                }
+        get {
+            val tasks = store.findAll()
 
-                ok(taskResponse, Json, UTF_8)
-            }
-
-            get("/{id}") {
-                val id = request.pathParameters["id"]
-
-                getTask(id)
-
-            }
-
-            post {
-                val taskCreationRequest = request.body<TaskCreationRequest>()
-                val task = Task(
-                    id = generateId(),
-                    title = taskCreationRequest.title,
-                    order = taskCreationRequest.order
+            val taskResponse = tasks.map {
+                TaskRetrievalResponse(
+                    url = it.url,
+                    title = it.title,
+                    order = it.order,
+                    completed = it.completed
                 )
-
-                store.saveOne(task)
-
-                getTask(task.id)
             }
 
-            patch("/{id}") {
-                val id = request.pathParameters["id"]
-                val taskUpdateRequest = request.body<TaskUpdateRequest>()
+            ok(taskResponse, Json, UTF_8)
+        }
 
-                store.findOne(id) ?: halt(404, "Task with id $id not found")
+        get("/{id}") {
+            val id = request.pathParameters["id"]
 
-                val updates = mapOf(
-                    Task::title.name to taskUpdateRequest.title,
-                    Task::order.name to taskUpdateRequest.order,
-                    Task::completed.name to taskUpdateRequest.completed
-                )
+            getTask(id, store)
+        }
 
-                if (store.updateOne(id, updates)) getTask(id)
-                else halt(400, "Unable to update task with id $id")
-            }
+        post {
+            val taskCreationRequest = request.body<TaskCreationRequest>()
+            val task = Task(
+                id = generateId(),
+                title = taskCreationRequest.title,
+                order = taskCreationRequest.order
+            )
 
-            delete {
-                store.drop()
-                ok()
-            }
+            store.insertOne(task)
 
-            delete("/{id}") {
-                val id = request.pathParameters["id"]
+            getTask(task.id, store)
+        }
 
-                store.findOne(id) ?: halt(404, "Task with id $id not found")
+        patch("/{id}") {
+            val id = request.pathParameters["id"]
+            val taskUpdateRequest = request.body<TaskUpdateRequest>()
 
-                if (store.deleteOne(id)) ok()
-                else halt(400, "Unable to delete task with id $id")
-            }
+            store.findOne(id) ?: halt(404, "Task with id $id not found")
+
+            val updates = mapOf(
+                Task::title.name to taskUpdateRequest.title,
+                Task::order.name to taskUpdateRequest.order,
+                Task::completed.name to taskUpdateRequest.completed
+            )
+
+            if (store.updateOne(id, updates)) getTask(id, store)
+            else halt(400, "Unable to update task with id $id")
+        }
+
+        delete {
+            if (store.deleteAll()) ok()
+            else halt(400, "No tasks to delete")
+        }
+
+        delete("/{id}") {
+            val id = request.pathParameters["id"]
+
+            store.findOne(id) ?: halt(404, "Task with id $id not found")
+
+            if (store.deleteOne(id)) ok()
+            else halt(400, "Unable to delete task with id $id")
         }
     }
-
-    server.start()
 }
 
 internal fun generateId(): String {
     return UUID.randomUUID().toString()
 }
 
-internal fun Call.getTask(id: String) {
+internal fun Call.getTask(id: String, store: TaskStore) {
     val task = store.findOne(id) ?: halt(404, "Task with id $id not found")
 
     val taskResponse = TaskRetrievalResponse(
-            url         = task.url,
-            title       = task.title,
-            order       = task.order,
-            completed   = task.completed
+        url         = task.url,
+        title       = task.title,
+        order       = task.order,
+        completed   = task.completed
     )
 
     ok(taskResponse, Json, UTF_8)
