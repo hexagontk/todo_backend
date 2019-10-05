@@ -70,8 +70,8 @@ internal val router = Router {
         }
 
         delete {
-            if (store.deleteAll()) ok()
-            else halt(400, "No tasks to delete")
+            store.deleteAll()
+            ok()
         }
 
         delete("/{id}") {
