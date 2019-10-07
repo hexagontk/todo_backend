@@ -1,8 +1,0 @@
-
-POST http://localhost:2010/tasks
-Content-Type: application/json
-
-{
-    "code" : "first",
-    "name" : "task"
-}
