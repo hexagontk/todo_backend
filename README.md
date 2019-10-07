@@ -14,7 +14,7 @@ Response:
 {
     "url": "/tasks/{id}",
     "title": string,
-    "order": int,
+    "order": int?,
     "completed": boolean
 }
 ```
@@ -26,7 +26,7 @@ Response:
 [
     {
         "url": "/tasks/{id}",
-        "title": string
+        "title": string,
         "order": int?,
         "completed": boolean
     },
