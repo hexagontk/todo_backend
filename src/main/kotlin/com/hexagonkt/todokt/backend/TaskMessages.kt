@@ -17,4 +17,3 @@ data class TaskUpdateRequest(
     val order: Int?,
     val completed: Boolean?
 )
-

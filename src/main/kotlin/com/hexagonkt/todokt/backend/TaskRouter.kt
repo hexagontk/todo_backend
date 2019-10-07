@@ -15,6 +15,7 @@ internal val router = Router {
 
     cors()
 
+    // Needed to allow for OPTION requests for all endpoints
     options("/*") { }
 
     path("/tasks") {

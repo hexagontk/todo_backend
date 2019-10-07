@@ -10,11 +10,11 @@ The spec is:
 GET `/tasks/{id}`
 
 Response:
-```json
+```
 {
     "url": "/tasks/{id}",
-    "title": string
-    "order": int?,
+    "title": string,
+    "order": int,
     "completed": boolean
 }
 ```
@@ -22,7 +22,7 @@ Response:
 GET `/tasks`
 
 Response:
-```json
+```
 [
     {
         "url": "/tasks/{id}",
@@ -37,7 +37,7 @@ Response:
 POST `/tasks`
 
 Request:
-```json
+```
 {
   "title": string,
   "order": int?
@@ -45,7 +45,7 @@ Request:
 ```
 
 Response:
-```json
+```
 {
     "url": "/tasks/{id}",
     "title": string
@@ -56,7 +56,7 @@ Response:
 
 PATCH `/tasks/{id}`
 Request:
-```json
+```
 {
   "title": string?,
   "order": int?
@@ -65,7 +65,7 @@ Request:
 ```
 
 Response:
-```json
+```
 {
     "url": "/tasks/{id}",
     "title": string

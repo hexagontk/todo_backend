@@ -23,9 +23,7 @@ class WebApplication : ServletServer(router)
 
 internal val server: Server = Server(injector.inject(), router, settings)
 
-private fun createTaskStore(): TaskStore {
-    return MongoDbTaskStore()
-}
+private fun createTaskStore(): TaskStore = MongoDbTaskStore()
 
 internal fun main() {
     server.start()
