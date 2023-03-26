@@ -15,9 +15,8 @@ applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UsePara
 dependencies {
     implementation("com.hexagonkt:http_server_jetty:$hexagonVersion")
     implementation("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
-    implementation("com.hexagonkt:store_mongodb:$hexagonVersion")
-
-    testImplementation("com.hexagonkt:port_http_client:$hexagonVersion")
+    implementation("com.hexagonkt.extra:store_mongodb:$hexagonVersion")
+    implementation("com.hexagonkt.extra:converters:$hexagonVersion")
 }
 
 task stage(dependsOn: ['build', 'clean'])

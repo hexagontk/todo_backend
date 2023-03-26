@@ -1,6 +1,6 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.core.media.ApplicationMedia
+import com.hexagonkt.core.media.APPLICATION_JSON
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.server.handlers.HttpServerContext
 import com.hexagonkt.http.server.handlers.path
@@ -88,7 +88,7 @@ class Router(private val store: TaskStore) {
         // Needed to allow for OPTION requests for all endpoints
         // TODO: Add options
         // options("/*")
-        after("*") { send(contentType = ContentType(ApplicationMedia.JSON)) }
+        after("*") { send(contentType = ContentType(APPLICATION_JSON)) }
         after("*") {
             val serialized = response.body.serialize(Json)
             send(body = serialized)

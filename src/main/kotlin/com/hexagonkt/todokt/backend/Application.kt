@@ -1,6 +1,6 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.core.converters.ConvertersManager
+import com.hexagonkt.converters.ConvertersManager
 import com.hexagonkt.core.keys
 import com.hexagonkt.core.requireKeys
 import com.hexagonkt.http.server.HttpServer
