@@ -1,11 +1,10 @@
 package com.hexagonkt.todokt.backend.stores
 
-import com.hexagonkt.settings.SettingsManager
 import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagonkt.todokt.backend.entities.Task
 
 class MongoDbTaskStore: TaskStore {
-    private val store = MongoDbStore(Task::class, Task::id, SettingsManager.requireSetting("mongoDbUrl") as String)
+    private val store = MongoDbStore(Task::class, Task::id, System.getenv("SERVICE_mongoDbUrl"))
 
     override fun findAll(): List<Task> {
         return store.findAll()

@@ -1,30 +1,46 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.http.server.Server
-import com.hexagonkt.http.server.ServerPort
+import com.hexagonkt.core.converters.ConvertersManager
+import com.hexagonkt.core.keys
+import com.hexagonkt.core.requireKeys
+import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
-import com.hexagonkt.http.server.servlet.ServletServer
-import com.hexagonkt.injection.InjectionManager
-import com.hexagonkt.settings.SettingsManager.settings
 import com.hexagonkt.todokt.backend.entities.Task
 import com.hexagonkt.todokt.backend.stores.MongoDbTaskStore
-import com.hexagonkt.todokt.backend.stores.TaskStore
-import javax.servlet.annotation.WebListener
 
 
-internal val injector = InjectionManager {
-    bindObject<ServerPort>(JettyServletAdapter())
-    bindObject(Task::class, createTaskStore())
+internal class Application {
+    private val server: HttpServer = HttpServer(
+        adapter = JettyServletAdapter(minThreads = 4),
+        handler = Router(store = MongoDbTaskStore()).handler
+    )
+
+    fun start() {
+        registerConverters()
+        server.start()
+    }
+
+    private fun registerConverters() {
+        ConvertersManager.register(Task::class to Map::class) { task ->
+            mapOf(
+                Task::id.name to task.id,
+                Task::title.name to task.title,
+                Task::order.name to task.order,
+                Task::url.name to task.url,
+                Task::completed.name to task.completed
+            )
+        }
+        ConvertersManager.register(Map::class to Task::class) { map ->
+            Task(
+                id = map.requireKeys(Task::id),
+                title = map.requireKeys(Task::title),
+                order = map.keys(Task::order),
+                completed = map.keys(Task::completed)
+            )
+        }
+    }
 }
 
-@WebListener
-@Suppress("unused")
-class WebApplication : ServletServer(router)
-
-internal val server: Server = Server(injector.inject(), router, settings)
-
-private fun createTaskStore(): TaskStore = MongoDbTaskStore()
-
 internal fun main() {
-    server.start()
+    Application().start()
 }
