@@ -82,19 +82,17 @@ class Router(private val store: TaskStore) {
     }
 
     val handler = path {
-        // TODO: CORS
-        //cors()
-
+        cors()
         // Needed to allow for OPTION requests for all endpoints
         // TODO: Add options
-        // options("/*")
-        after("*") { send(contentType = ContentType(APPLICATION_JSON)) }
+        //options("/*") { }
         after("*") {
-            val serialized = response.body.serialize(Json)
-            send(body = serialized)
+            send(body = response.body.serialize(Json), contentType = ContentType(APPLICATION_JSON))
         }
         use(tasksHandler)
     }
+
+
 }
 
 internal fun HttpServerContext.getTask(id: String, store: TaskStore): HttpServerContext {

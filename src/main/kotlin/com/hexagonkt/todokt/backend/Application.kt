@@ -10,6 +10,7 @@ import com.hexagonkt.todokt.backend.stores.MongoDbTaskStore
 
 
 internal class Application {
+    // TODO: Replace with injection
     private val server: HttpServer = HttpServer(
         adapter = JettyServletAdapter(minThreads = 4),
         handler = Router(store = MongoDbTaskStore()).handler
@@ -21,6 +22,7 @@ internal class Application {
     }
 
     private fun registerConverters() {
+        // TODO: do all type conversions here
         ConvertersManager.register(Task::class to Map::class) { task ->
             mapOf(
                 Task::id.name to task.id,
