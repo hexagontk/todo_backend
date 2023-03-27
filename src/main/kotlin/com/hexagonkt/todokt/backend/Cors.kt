@@ -1,13 +1,17 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.http.model.HttpMethod
+import com.hexagonkt.http.model.HttpMethod.DELETE
+import com.hexagonkt.http.model.HttpMethod.GET
+import com.hexagonkt.http.model.HttpMethod.OPTIONS
+import com.hexagonkt.http.model.HttpMethod.PATCH
+import com.hexagonkt.http.model.HttpMethod.POST
 import com.hexagonkt.http.server.callbacks.CorsCallback
 import com.hexagonkt.http.server.handlers.ServerBuilder
 
 fun ServerBuilder.cors() {
     filter(
         "*", CorsCallback(
-            allowedMethods = HttpMethod.ALL,
+            allowedMethods = setOf(GET, POST, PATCH, DELETE, OPTIONS),
             allowedHeaders = setOf("Content-Type")
         )
     )

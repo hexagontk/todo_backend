@@ -83,9 +83,6 @@ class Router(private val store: TaskStore) {
 
     val handler = path {
         cors()
-        // Needed to allow for OPTION requests for all endpoints
-        // TODO: Add options
-        //options("/*") { }
         after("*") {
             send(body = response.body.serialize(Json), contentType = ContentType(APPLICATION_JSON))
         }
