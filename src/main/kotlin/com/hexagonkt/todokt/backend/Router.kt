@@ -1,5 +1,6 @@
 package com.hexagonkt.todokt.backend
 
+import com.hexagonkt.converters.convert
 import com.hexagonkt.core.media.APPLICATION_JSON
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.server.handlers.HttpServerContext
@@ -15,17 +16,8 @@ import java.util.UUID
 class Router(private val store: TaskStore) {
     private val tasksHandler = path("/tasks") {
         get {
-            val tasks = store.findAll()
-
-            val taskResponse = tasks.map {
-                TaskRetrievalResponse(
-                    url = it.url,
-                    title = it.title,
-                    order = it.order,
-                    completed = it.completed
-                )
-            }
-
+            val taskResponse =
+                store.findAll().map { task -> task.convert(TaskRetrievalResponse::class) }
             ok(taskResponse)
         }
 
@@ -35,33 +27,27 @@ class Router(private val store: TaskStore) {
         }
 
         post {
-            val taskCreationRequest = TaskCreationRequest(
-                request.bodyString().parseMap(Json).mapKeys { it.key.toString() }
-            )
+            val taskCreationRequest =
+                request.bodyString().parseMap(Json).convert(TaskCreationRequest::class)
             val task = Task(
                 id = UUID.randomUUID().toString(),
                 title = taskCreationRequest.title,
                 order = taskCreationRequest.order
             )
-
             store.insertOne(task)
-
             getTask(task.id, store)
         }
 
         patch("/{id}") {
             val id = pathParameters.getValue("id")
-            val taskUpdateRequest = TaskUpdateRequest(
-                request.bodyString().parseMap(Json).mapKeys { it.key.toString() }
-            )
+            val taskUpdateRequest =
+                request.bodyString().parseMap(Json).convert(TaskUpdateRequest::class)
             store.findOne(id) ?: notFound("Task with id $id not found")
-
             val updates = mapOf(
                 Task::title.name to taskUpdateRequest.title,
                 Task::order.name to taskUpdateRequest.order,
                 Task::completed.name to taskUpdateRequest.completed
             )
-
             if (store.updateOne(id, updates)) getTask(id, store)
             else badRequest("Unable to update task with id $id")
         }
@@ -73,9 +59,7 @@ class Router(private val store: TaskStore) {
 
         delete("/{id}") {
             val id = pathParameters.getValue("id")
-
             store.findOne(id) ?: notFound("Task with id $id not found")
-
             if (store.deleteOne(id)) ok()
             else badRequest("Unable to delete task with id $id")
         }
@@ -84,16 +68,17 @@ class Router(private val store: TaskStore) {
     val handler = path {
         cors()
         after("*") {
-            send(body = response.body.serialize(Json), contentType = ContentType(APPLICATION_JSON))
+            send(
+                body = response.body.serialize(Json),
+                contentType = ContentType(APPLICATION_JSON)
+            )
         }
         use(tasksHandler)
     }
-
-
 }
 
 internal fun HttpServerContext.getTask(id: String, store: TaskStore): HttpServerContext {
-    val task = store.findOne(id)?.let { TaskRetrievalResponse.of(it) }
+    val task = store.findOne(id)?.let { task -> task.convert(TaskRetrievalResponse::class) }
     return if (task != null) {
         ok(task)
     } else {
