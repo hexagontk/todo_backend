@@ -17,7 +17,6 @@ dependencies {
     implementation("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
     implementation("com.hexagonkt.extra:store_mongodb:$hexagonVersion")
     implementation("com.hexagonkt.extra:converters:$hexagonVersion")
-    implementation("com.hexagonkt.extra:injection:$hexagonVersion")
 }
 
 task stage(dependsOn: ['build', 'clean'])
