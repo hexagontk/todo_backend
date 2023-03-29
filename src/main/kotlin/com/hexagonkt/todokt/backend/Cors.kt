@@ -1,12 +1,18 @@
 package com.hexagonkt.todokt.backend
 
-import com.hexagonkt.http.server.Router
+import com.hexagonkt.http.model.HttpMethod.DELETE
+import com.hexagonkt.http.model.HttpMethod.GET
+import com.hexagonkt.http.model.HttpMethod.OPTIONS
+import com.hexagonkt.http.model.HttpMethod.PATCH
+import com.hexagonkt.http.model.HttpMethod.POST
+import com.hexagonkt.http.server.callbacks.CorsCallback
+import com.hexagonkt.http.server.handlers.ServerBuilder
 
-fun Router.cors() {
-
-    before {
-        response.setHeader("Access-Control-Allow-Origin", "*")
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type")
-        response.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,DELETE,OPTIONS")
-    }
+fun ServerBuilder.cors() {
+    filter(
+        "*", CorsCallback(
+            allowedMethods = setOf(GET, POST, PATCH, DELETE, OPTIONS),
+            allowedHeaders = setOf("Content-Type")
+        )
+    )
 }
