@@ -6,9 +6,9 @@ import com.hexagonkt.http.model.HttpMethod.OPTIONS
 import com.hexagonkt.http.model.HttpMethod.PATCH
 import com.hexagonkt.http.model.HttpMethod.POST
 import com.hexagonkt.http.server.callbacks.CorsCallback
-import com.hexagonkt.http.server.handlers.ServerBuilder
+import com.hexagonkt.http.handlers.HandlerBuilder
 
-fun ServerBuilder.cors() {
+fun HandlerBuilder.cors() {
     filter(
         "*", CorsCallback(
             allowedMethods = setOf(GET, POST, PATCH, DELETE, OPTIONS),

@@ -1,9 +1,9 @@
 
-version: '3'
+version: '3.9'
 
 services:
 
   mongodb:
-    image: mongo:4.2.0
+    image: mongo:6.0-jammy
     ports:
-      - 27017:27017
+      - "27017:27017"

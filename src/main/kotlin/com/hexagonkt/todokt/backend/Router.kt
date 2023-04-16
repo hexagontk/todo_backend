@@ -3,8 +3,8 @@ package com.hexagonkt.todokt.backend
 import com.hexagonkt.converters.convert
 import com.hexagonkt.core.media.APPLICATION_JSON
 import com.hexagonkt.http.model.ContentType
-import com.hexagonkt.http.server.handlers.HttpServerContext
-import com.hexagonkt.http.server.handlers.path
+import com.hexagonkt.http.handlers.HttpContext
+import com.hexagonkt.http.handlers.path
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.parseMap
 import com.hexagonkt.serialization.serialize
@@ -77,7 +77,7 @@ class Router(private val store: TaskStore) {
     }
 }
 
-internal fun HttpServerContext.getTask(id: String, store: TaskStore): HttpServerContext {
+internal fun HttpContext.getTask(id: String, store: TaskStore): HttpContext {
     val task = store.findOne(id)?.let { task -> task.convert(TaskRetrievalResponse::class) }
     return if (task != null) {
         ok(task)

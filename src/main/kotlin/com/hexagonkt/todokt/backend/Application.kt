@@ -1,8 +1,8 @@
 package com.hexagonkt.todokt.backend
 
 import com.hexagonkt.converters.ConvertersManager
-import com.hexagonkt.core.keys
-import com.hexagonkt.core.requireKeys
+import com.hexagonkt.core.getPath
+import com.hexagonkt.core.requirePath
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
 import com.hexagonkt.todokt.backend.entities.Task
@@ -32,10 +32,10 @@ internal class Application {
         }
         ConvertersManager.register(Map::class to Task::class) { map ->
             Task(
-                id = map.requireKeys(Task::id),
-                title = map.requireKeys(Task::title),
-                order = map.keys(Task::order),
-                completed = map.keys(Task::completed)
+                id = map.requirePath(Task::id),
+                title = map.requirePath(Task::title),
+                order = map.getPath(Task::order),
+                completed = map.getPath(Task::completed)
             )
         }
         ConvertersManager.register(Task::class to TaskRetrievalResponse::class) { task ->
@@ -48,15 +48,15 @@ internal class Application {
         }
         ConvertersManager.register(Map::class to TaskCreationRequest::class) { map ->
             TaskCreationRequest(
-                title = map.requireKeys(TaskCreationRequest::title),
-                order = map.keys(TaskCreationRequest::order),
+                title = map.requirePath(TaskCreationRequest::title),
+                order = map.getPath(TaskCreationRequest::order),
             )
         }
         ConvertersManager.register(Map::class to TaskUpdateRequest::class) { map ->
             TaskUpdateRequest(
-                title = map.keys(TaskUpdateRequest::title),
-                order = map.keys(TaskUpdateRequest::order),
-                completed = map.keys(TaskUpdateRequest::completed)
+                title = map.getPath(TaskUpdateRequest::title),
+                order = map.getPath(TaskUpdateRequest::order),
+                completed = map.getPath(TaskUpdateRequest::completed)
             )
         }
     }

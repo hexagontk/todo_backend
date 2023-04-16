@@ -1,6 +1,6 @@
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.8.10"
+    id "org.jetbrains.kotlin.jvm" version "1.8.20"
 }
 
 // Build configuration is taken from helper scripts in Hexagon's repository
@@ -15,8 +15,8 @@ applicationDefaultJvmArgs = [ "-Xms64M", "-Xmx2G", "-XX:+UseNUMA", "-XX:+UsePara
 dependencies {
     implementation("com.hexagonkt:http_server_jetty:$hexagonVersion")
     implementation("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
-    implementation("com.hexagonkt.extra:store_mongodb:$hexagonVersion")
-    implementation("com.hexagonkt.extra:converters:$hexagonVersion")
+    implementation("com.hexagonkt.extra:store_mongodb:$hexagonExtraVersion")
+    implementation("com.hexagonkt.extra:converters:$hexagonExtraVersion")
 }
 
 task stage(dependsOn: ['build', 'clean'])
