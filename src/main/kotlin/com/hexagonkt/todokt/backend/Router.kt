@@ -12,7 +12,6 @@ import com.hexagonkt.todokt.backend.entities.Task
 import com.hexagonkt.todokt.backend.stores.TaskStore
 import java.util.UUID
 
-
 class Router(private val store: TaskStore) {
     private val tasksHandler = path("/tasks") {
         get {

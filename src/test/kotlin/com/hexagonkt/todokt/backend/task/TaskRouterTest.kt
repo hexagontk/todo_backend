@@ -3,7 +3,7 @@ package com.hexagonkt.todokt.backend.task
 import com.hexagonkt.todokt.backend.entities.Task
 import com.hexagonkt.todokt.backend.stores.TaskStore
 
-internal class TaskRouterTest() {
+internal class TaskRouterTest {
 
     val store = object : TaskStore {
         val taskList = mutableListOf<Task>()

@@ -10,7 +10,8 @@ import com.hexagonkt.http.handlers.HandlerBuilder
 
 fun HandlerBuilder.cors() {
     filter(
-        "*", CorsCallback(
+        "*",
+        CorsCallback(
             allowedMethods = setOf(GET, POST, PATCH, DELETE, OPTIONS),
             allowedHeaders = setOf("Content-Type")
         )
