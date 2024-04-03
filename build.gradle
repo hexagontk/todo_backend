@@ -1,6 +1,6 @@
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.9.0"
+    id "org.jetbrains.kotlin.jvm" version "1.9.23"
 }
 
 // Build configuration is taken from helper scripts in Hexagon's repository
