@@ -77,7 +77,7 @@ class Router(private val store: TaskStore) {
 }
 
 internal fun HttpContext.getTask(id: String, store: TaskStore): HttpContext {
-    val task = store.findOne(id)?.let { task -> task.convert(TaskRetrievalResponse::class) }
+    val task = store.findOne(id)?.convert(TaskRetrievalResponse::class)
     return if (task != null) {
         ok(task)
     } else {
