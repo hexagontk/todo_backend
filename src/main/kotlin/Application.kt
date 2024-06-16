@@ -1,13 +1,12 @@
-package com.hexagonkt.todokt.backend
+package com.hexagontk.todo.backend
 
 import com.hexagonkt.converters.ConvertersManager
 import com.hexagonkt.core.getPath
 import com.hexagonkt.core.requirePath
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
-import com.hexagonkt.todokt.backend.entities.Task
-import com.hexagonkt.todokt.backend.stores.MongoDbTaskStore
-
+import com.hexagontk.todo.backend.entities.Task
+import com.hexagontk.todo.backend.stores.MongoDbTaskStore
 
 internal class Application {
     private val server: HttpServer = HttpServer(

@@ -10,7 +10,7 @@ val hexagonExtraVersion = "3.5.3"
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
 ext.set("options", "-Xms64M -Xmx1G -XX:+UseNUMA")
-ext.set("applicationClass", "com.hexagonkt.todokt.backend.ApplicationKt")
+ext.set("applicationClass", "com.hexagontk.todo.backend.ApplicationKt")
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")

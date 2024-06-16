@@ -5,7 +5,7 @@ gradle.rootProject {
 
     allprojects {
         version = "1.0.0"
-        group = "com.hexagonkt"
+        group = "com.hexagontk"
         description = "Task Manager"
     }
 }

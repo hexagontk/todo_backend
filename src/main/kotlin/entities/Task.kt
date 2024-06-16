@@ -1,4 +1,4 @@
-package com.hexagonkt.todokt.backend.entities
+package com.hexagontk.todo.backend.entities
 
 data class Task(
     val id: String,

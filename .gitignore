@@ -1,21 +1,52 @@
 
+# Private / Local
+private_*
+local_*
+
+# Binaries
+*.out
+
+# Maven
+target/
+pom.xml.*
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+*.versionsBackup
+
 # Gradle
 .gradle/
 build/
 
-# Idea
-.idea/
-out/
-*.iml
-
 # Eclipse
+bin/
 .settings/
 .project
 .classpath
 
+# Idea
+/out/
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
 # Runtime
 log/
-*.hprof
 *.log
+*.hprof
+*.build_artifacts.txt
+.attach_pid*
+hs_err_pid*
 
-.editorconfig
+# Other Tools
+kotlin-js-store/
+node_modules/
+.kotlin/
+.vagrant/
+.env
+
+# System Files
+.DS_Store
+Thumbs.db

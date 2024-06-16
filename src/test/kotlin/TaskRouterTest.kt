@@ -1,7 +1,6 @@
-package com.hexagonkt.todokt.backend.task
+package com.hexagontk.todo.backend.entities
 
-import com.hexagonkt.todokt.backend.entities.Task
-import com.hexagonkt.todokt.backend.stores.TaskStore
+import com.hexagontk.todo.backend.stores.TaskStore
 
 internal class TaskRouterTest {
 

@@ -1,6 +1,6 @@
-package com.hexagonkt.todokt.backend.stores
+package com.hexagontk.todo.backend.stores
 
-import com.hexagonkt.todokt.backend.entities.Task
+import com.hexagontk.todo.backend.entities.Task
 
 interface TaskStore {
 
