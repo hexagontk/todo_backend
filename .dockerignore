@@ -1,0 +1,5 @@
+
+*
+!/build/distributions/*
+!/build/native/nativeCompile/*
+!/build/todo_backend/

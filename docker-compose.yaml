@@ -5,5 +5,25 @@ services:
 
   mongodb:
     image: mongo:7-jammy
-    ports:
-      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: todo
+    volumes: [ mongodb:/data/db ]
+    ports: [ "27017:27017" ]
+
+  todo:
+    profiles: [ local ]
+    depends_on: [ mongodb ]
+    image: ${REGISTRY:-}todo
+    build:
+      dockerfile: Dockerfile
+    environment:
+      GLOBAL_LOG_LEVEL: warn
+      APPLICATION_LOG_LEVEL: info
+      MONGODB_URL: mongodb://root:password@mongodb/todo?authSource=admin
+    ports: [ "18080:8080" ]
+
+volumes:
+  mongodb:
+    driver: local

@@ -1,26 +1,22 @@
 
+<!--
+ ! Logging can be configured at runtime with the GLOBAL_LOG_LEVEL, and the APPLICATION_LOG_LEVEL
+ ! environment variables.
+ !-->
 <configuration>
+  <property
+    name="pattern"
+    value="%gray(%d{HH:mm:ss.SSS}) %highlight(%-5p) %magenta([%-15.15t]) %cyan(%-30c{30}) | %m%n"/>
+
   <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <Pattern>%d{HH:mm:ss.SSS} %highlight(%-5p) %magenta([%-18.18t]) %-30c{30} | %m%n</Pattern>
+      <Pattern>${pattern}</Pattern>
     </encoder>
   </appender>
 
-  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>log/%d{yyyy-MM-dd}.log</FileNamePattern>
-      <MaxHistory>5</MaxHistory>
-    </rollingPolicy>
-    <encoder>
-      <Pattern>%d{HH:mm:ss.SSS} %-5p [%-15.15thread] %-30logger{30} %X{jvmId} | %m%n</Pattern>
-    </encoder>
-  </appender>
-
-  <root level="off">
-    <appender-ref ref="console" />
-    <appender-ref ref="file" />
+  <root level="${GLOBAL_LOG_LEVEL:-info}">
+    <appender-ref ref="${GLOBAL_LOG_APPENDER:-console}" />
   </root>
 
-  <logger name="com.hexagontk" level="debug" />
-  <logger name="com.hexagontk.todo" level="trace" />
+  <logger name="com.hexagontk.todo" level="${APPLICATION_LOG_LEVEL:-trace}" />
 </configuration>
