@@ -1,9 +1,9 @@
 
-version: '3.9'
+name: todo_backend
 
 services:
 
   mongodb:
-    image: mongo:7.0-jammy
+    image: mongo:7-jammy
     ports:
       - "27017:27017"
