@@ -3,13 +3,13 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 
 metadata:
+  name: mongodb
+  namespace: todo
   labels:
     io.kompose.service: mongodb
-  name: mongodb
 
 spec:
-  accessModes:
-    - ReadWriteOnce
+  accessModes: [ ReadWriteOnce ]
   resources:
     requests:
       storage: 100Mi

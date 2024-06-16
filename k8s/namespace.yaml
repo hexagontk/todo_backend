@@ -6,3 +6,5 @@ metadata:
   name: todo
   labels:
     name: todo
+  annotations:
+    environment: local
