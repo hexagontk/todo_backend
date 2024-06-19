@@ -1,11 +1,7 @@
 
 FROM ubuntu:jammy
-
-# Project setup
 ARG PROJECT
 ARG TZ=UTC
-
-VOLUME /var/log
 
 # Machine setup
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

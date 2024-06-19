@@ -1,10 +1,6 @@
 
 FROM ubuntu:jammy
-
-# Project setup
 ARG PROJECT
-
-VOLUME /var/log
 
 # Project install
 USER 1000
