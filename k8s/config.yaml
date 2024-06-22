@@ -8,4 +8,7 @@ metadata:
 
 data:
   bindAddress: "0.0.0.0"
-  mongodbUrl: "mongodb://mongodb"
+  mongodbUrl: "mongodb://root:password@mongodb/todo?authSource=admin"
+  mongodbRootUsername: "root"
+  mongodbRootPassword: "password"
+  mongodbDatabase: "todo"

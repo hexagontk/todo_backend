@@ -1,5 +1,6 @@
 package com.hexagontk.todo.backend.stores
 
+import com.hexagonkt.core.Jvm
 import com.hexagonkt.store.mongodb.MongoDbStore
 import com.hexagontk.todo.backend.entities.Task
 
@@ -7,7 +8,7 @@ class MongoDbTaskStore: TaskStore {
     private val store = MongoDbStore(
         Task::class,
         Task::id,
-        System.getenv("MONGODB_URL") ?: "mongodb://root:password@localhost/todo?authSource=admin",
+        Jvm.systemSetting("MONGODB_URL", "mongodb://root:password@localhost/todo?authSource=admin"),
     )
 
     override fun findAll(): List<Task> {

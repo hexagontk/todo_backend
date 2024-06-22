@@ -24,15 +24,31 @@ spec:
       annotations:
         environment: local
     spec:
+      restartPolicy: Always
       containers:
         - image: docker.io/mongo:7-jammy
           name: mongodb
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-configmap
+                  key: mongodbRootUsername
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-configmap
+                  key: mongodbRootPassword
+            - name: MONGO_INITDB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-configmap
+                  key: mongodbDatabase
           ports:
             - containerPort: 27017
           volumeMounts:
             - mountPath: /data/db
               name: mongodb
-      restartPolicy: Always
       volumes:
         - name: mongodb
           persistentVolumeClaim:

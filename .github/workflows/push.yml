@@ -6,10 +6,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: graalvm/setup-graalvm@v1
+      - uses: actions/cache@v4
         with:
-          version: latest
-          distribution: graalvm
-          java-version: 21
-          cache: gradle
-      - run: ./gradlew nativeTest
+          path: ~/.sdkman
+          key: "${{ runner.os }}-sdkman-${{ hashFiles('.sdkmanrc') }}"
+          restore-keys: "${{ runner.os }}-sdkman-"
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/*.properties') }}"
+          restore-keys: "${{ runner.os }}-gradle-"
+      - run: curl -s "https://get.sdkman.io?rcupdate=false" | bash
+      - run: |
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk env install
+          ./gradlew jpackage

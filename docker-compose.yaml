@@ -17,7 +17,7 @@ services:
     depends_on: [ mongodb ]
     image: ${REGISTRY:-}todo
     build:
-      dockerfile: jpackage.dockerfile
+      dockerfile: Dockerfile
     environment:
       GLOBAL_LOG_LEVEL: warn
       APPLICATION_LOG_LEVEL: info

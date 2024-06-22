@@ -1,9 +1,7 @@
 package com.hexagontk.todo.backend
 
 import com.hexagonkt.converters.ConvertersManager
-import com.hexagonkt.core.ALL_INTERFACES
-import com.hexagonkt.core.getPath
-import com.hexagonkt.core.requirePath
+import com.hexagonkt.core.*
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
@@ -13,8 +11,11 @@ import com.hexagontk.todo.backend.stores.MongoDbTaskStore
 internal class Application {
     private val server: HttpServer = HttpServer(
         adapter = JettyServletAdapter(minThreads = 4),
-        settings = HttpServerSettings(bindPort = 2010, bindAddress = ALL_INTERFACES),
-        handler = Router(store = MongoDbTaskStore()).handler
+        handler = Router(store = MongoDbTaskStore()).handler,
+        settings = HttpServerSettings(
+            bindPort = 2010,
+            bindAddress = Jvm.systemSetting("BIND_ADDRESS", LOOPBACK_INTERFACE)
+        ),
     )
 
     fun start() {

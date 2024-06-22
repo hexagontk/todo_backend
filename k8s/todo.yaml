@@ -24,23 +24,23 @@ spec:
         app: todo
         type: backend
     spec:
+      restartPolicy: Always
       containers:
-        - env:
-            - name: bindAddress
+        - image: k3d.localhost:5000/todo
+          name: todo
+          env:
+            - name: BIND_ADDRESS
               valueFrom:
                 configMapKeyRef:
                   name: todo-configmap
                   key: bindAddress
-            - name: mongodbUrl
+            - name: MONGODB_URL
               valueFrom:
                 configMapKeyRef:
                   name: todo-configmap
                   key: mongodbUrl
-          image: k3d.localhost:5000/todo
-          name: todo
           ports:
             - containerPort: 2010
-      restartPolicy: Always
 
 ---
 
@@ -57,7 +57,9 @@ metadata:
     type: backend
 
 spec:
+  type: NodePort
   ports:
-    - port: 3090
+    - port: 2010
+      nodePort: 31080
   selector:
     io.kompose.service: todo
