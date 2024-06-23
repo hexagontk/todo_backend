@@ -1,4 +1,4 @@
-package com.hexagontk.todo.backend
+package com.hexagontk.todo.backend.rest
 
 import com.hexagonkt.http.model.HttpMethod.DELETE
 import com.hexagonkt.http.model.HttpMethod.GET

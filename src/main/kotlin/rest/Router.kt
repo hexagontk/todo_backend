@@ -1,4 +1,4 @@
-package com.hexagontk.todo.backend
+package com.hexagontk.todo.backend.rest
 
 import com.hexagonkt.converters.convert
 import com.hexagonkt.core.media.APPLICATION_JSON

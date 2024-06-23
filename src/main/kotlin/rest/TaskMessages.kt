@@ -1,4 +1,4 @@
-package com.hexagontk.todo.backend
+package com.hexagontk.todo.backend.rest
 
 data class TaskRetrievalResponse(
     val url: String,

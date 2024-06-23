@@ -7,6 +7,10 @@ import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
 import com.hexagontk.todo.backend.domain.model.Task
 import com.hexagontk.todo.backend.adapters.MongoDbTaskStore
+import com.hexagontk.todo.backend.rest.Router
+import com.hexagontk.todo.backend.rest.TaskCreationRequest
+import com.hexagontk.todo.backend.rest.TaskRetrievalResponse
+import com.hexagontk.todo.backend.rest.TaskUpdateRequest
 
 internal class Application {
     private val server: HttpServer = HttpServer(
