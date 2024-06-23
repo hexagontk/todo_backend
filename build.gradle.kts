@@ -5,8 +5,8 @@ plugins {
     id("org.graalvm.buildtools.native") version("0.10.2")
 }
 
-val hexagonVersion = "3.5.3"
-val hexagonExtraVersion = "3.5.3"
+val hexagonVersion = "3.6.0"
+val hexagonExtraVersion = "3.6.0"
 val logbackVersion = "1.5.6"
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
@@ -28,4 +28,29 @@ dependencies {
 tasks.wrapper {
     gradleVersion = "8.8"
     distributionType = ALL
+}
+
+tasks.register("buildImage", type = Exec::class) {
+    dependsOn("jpackage")
+    commandLine("docker", "compose", "--profile", "local", "build")
+
+    environment(
+        "REGISTRY" to (environment["REGISTRY"] ?: "k3d.localhost:5000/"),
+        "VERSION" to (environment["VERSION"] ?: version)
+    )
+}
+
+tasks.register("pushImage", type = Exec::class) {
+    dependsOn("jpackage")
+    commandLine("docker", "compose", "--profile", "local", "push")
+
+    environment(
+        "REGISTRY" to (environment["REGISTRY"] ?: "k3d.localhost:5000/"),
+        "VERSION" to (environment["VERSION"] ?: version)
+    )
+}
+
+tasks.register("up", type = Exec::class) {
+    dependsOn("buildImage")
+    commandLine("docker", "compose", "--profile", "local", "up")
 }

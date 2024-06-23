@@ -22,7 +22,7 @@ services:
       GLOBAL_LOG_LEVEL: warn
       APPLICATION_LOG_LEVEL: info
       MONGODB_URL: mongodb://root:password@mongodb/todo?authSource=admin
-    ports: [ "18080:8080" ]
+    ports: [ "2010:2010" ]
 
 volumes:
   mongodb:
