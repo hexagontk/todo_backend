@@ -2,7 +2,7 @@ package com.hexagontk.todo.backend.stores
 
 import com.hexagonkt.core.Jvm
 import com.hexagonkt.store.mongodb.MongoDbStore
-import com.hexagontk.todo.backend.entities.Task
+import com.hexagontk.todo.backend.domain.Task
 
 class MongoDbTaskStore: TaskStore {
     private val store = MongoDbStore(

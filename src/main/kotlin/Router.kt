@@ -8,7 +8,7 @@ import com.hexagonkt.http.handlers.path
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.parseMap
 import com.hexagonkt.serialization.serialize
-import com.hexagontk.todo.backend.entities.Task
+import com.hexagontk.todo.backend.domain.Task
 import com.hexagontk.todo.backend.stores.TaskStore
 import java.util.UUID
 

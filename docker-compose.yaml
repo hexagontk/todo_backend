@@ -19,6 +19,7 @@ services:
     build:
       dockerfile: Dockerfile
     environment:
+      BIND_ADDRESS: 0.0.0.0
       GLOBAL_LOG_LEVEL: warn
       APPLICATION_LOG_LEVEL: info
       MONGODB_URL: mongodb://root:password@mongodb/todo?authSource=admin
