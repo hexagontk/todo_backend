@@ -83,6 +83,8 @@ Response: 200 OK
 ```bash
 ./gradlew build jpackage
 docker compose --profile local build
+# Or
+REGISTRY="k3d.localhost:5000/" docker compose --profile local build
 ```
 
 ### Deploy

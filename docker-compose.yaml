@@ -15,7 +15,7 @@ services:
   todo:
     profiles: [ local ]
     depends_on: [ mongodb ]
-    image: ${REGISTRY:-}todo
+    image: ${REGISTRY:-}todo:${VERSION:-latest}
     build:
       dockerfile: Dockerfile
     environment:
