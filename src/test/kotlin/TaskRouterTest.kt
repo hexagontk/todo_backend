@@ -1,6 +1,6 @@
 package com.hexagontk.todo.backend.domain
 
-import com.hexagontk.todo.backend.stores.TaskStore
+import com.hexagontk.todo.backend.domain.model.Task
 
 internal class TaskRouterTest {
 

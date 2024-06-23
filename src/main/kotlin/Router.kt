@@ -8,8 +8,8 @@ import com.hexagonkt.http.handlers.path
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.parseMap
 import com.hexagonkt.serialization.serialize
-import com.hexagontk.todo.backend.domain.Task
-import com.hexagontk.todo.backend.stores.TaskStore
+import com.hexagontk.todo.backend.domain.model.Task
+import com.hexagontk.todo.backend.domain.TaskStore
 import java.util.UUID
 
 class Router(private val store: TaskStore) {

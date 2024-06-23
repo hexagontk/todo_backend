@@ -1,4 +1,4 @@
-package com.hexagontk.todo.backend.domain
+package com.hexagontk.todo.backend.domain.model
 
 data class Task(
     val id: String,

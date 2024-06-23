@@ -1,6 +1,6 @@
-package com.hexagontk.todo.backend.stores
+package com.hexagontk.todo.backend.domain
 
-import com.hexagontk.todo.backend.domain.Task
+import com.hexagontk.todo.backend.domain.model.Task
 
 interface TaskStore {
 
