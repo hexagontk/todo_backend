@@ -5,11 +5,11 @@ import com.hexagonkt.core.*
 import com.hexagonkt.http.server.HttpServer
 import com.hexagonkt.http.server.HttpServerSettings
 import com.hexagonkt.http.server.jetty.JettyServletAdapter
+import com.hexagonkt.serialization.SerializationManager
+import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagontk.todo.backend.domain.model.Task
 import com.hexagontk.todo.backend.adapters.MongoDbTaskStore
 import com.hexagontk.todo.backend.rest.Router
-import com.hexagontk.todo.backend.rest.TaskCreationRequest
-import com.hexagontk.todo.backend.rest.TaskRetrievalResponse
 import com.hexagontk.todo.backend.rest.TaskUpdateRequest
 
 internal class Application {
@@ -23,6 +23,7 @@ internal class Application {
     )
 
     fun start() {
+        SerializationManager.formats = setOf(Json)
         registerConverters()
         server.start()
     }
@@ -43,20 +44,6 @@ internal class Application {
                 title = map.requirePath(Task::title),
                 order = map.getPath(Task::order),
                 completed = map.getPath(Task::completed)
-            )
-        }
-        ConvertersManager.register(Task::class to TaskRetrievalResponse::class) { task ->
-            TaskRetrievalResponse(
-                url = task.url,
-                title = task.title,
-                order = task.order,
-                completed = task.completed
-            )
-        }
-        ConvertersManager.register(Map::class to TaskCreationRequest::class) { map ->
-            TaskCreationRequest(
-                title = map.requirePath(TaskCreationRequest::title),
-                order = map.getPath(TaskCreationRequest::order),
             )
         }
         ConvertersManager.register(Map::class to TaskUpdateRequest::class) { map ->

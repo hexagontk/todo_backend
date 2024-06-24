@@ -20,6 +20,7 @@ apply(from = "$gradleScripts/application.gradle")
 dependencies {
     implementation("com.hexagonkt:http_server_jetty:$hexagonVersion")
     implementation("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
+    implementation("com.hexagonkt:rest:$hexagonVersion")
     implementation("com.hexagonkt.extra:store_mongodb:$hexagonExtraVersion")
     implementation("com.hexagonkt.extra:converters:$hexagonExtraVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")

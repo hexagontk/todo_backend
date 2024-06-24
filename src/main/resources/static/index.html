@@ -9,7 +9,14 @@
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 </head>
 
-<h1>TODO</h1>
+<header>
+  <nav>
+    <a href="/" class="current">Home</a>
+    <a href="/">ToDo Web</a>
+  </nav>
+  <h1>TODO</h1>
+  <p>Example task application</p>
+</header>
 
 <h2>Open</h2>
 <table>
@@ -20,50 +27,27 @@
       <th>Order</th>
     </tr>
   </thead>
-  <tbody id="tasks">
-    <tr>
-      <td>a</td>
-      <td>b</td>
-      <td>0</td>
-    </tr>
-  </tbody>
+  <tbody id="tasks"></tbody>
 </table>
 
 <h2>New</h2>
 <form>
-  <label for="title">Title</label>
-  <input id="title" type="text">
-  <label for="order">Order</label>
-  <input id="order" type="number">
+  <fieldset>
+    <legend>Task data</legend>
+    <label for="title">Title</label>
+    <input id="title" type="text">
+    <label for="order">Order</label>
+    <input id="order" type="number">
+  </fieldset>
 </form>
 <button onclick="add()">Add</button>
 
-<script>
-  const http = new XMLHttpRequest();
+<template id="todoRow">
+  <tr>
+    <td>a</td>
+    <td>b</td>
+    <td>0</td>
+  </tr>
+</template>
 
-  function httpSend(method, url, body, callback) {
-    http.open(method, url);
-    http.setRequestHeader('Content-type', 'application/json');
-    http.send(JSON.stringify(body));
-    http.onreadystatechange = callback;
-  }
-
-  function httpGet(url, body, callback) {
-    httpSend('GET', url, body, callback);
-  }
-
-  function httpPost(url, body, callback) {
-    httpSend('POST', url, body, callback);
-  }
-
-  function add() {
-    let body = { title: 'a', order: 0 };
-    httpPost('/tasks', body, () => console.log(http.responseText));
-  }
-
-  function main() {
-    httpGet('/tasks', null, () => console.log(http.responseText));
-  }
-
-  main();
-</script>
+<script src="/main.js"></script>

@@ -11,9 +11,10 @@ import com.hexagonkt.http.handlers.path
 import com.hexagonkt.http.model.HttpMethod.*
 import com.hexagonkt.http.server.callbacks.CorsCallback
 import com.hexagonkt.http.server.callbacks.UrlCallback
+import com.hexagonkt.rest.SerializeResponseCallback
+import com.hexagonkt.rest.bodyObject
 import com.hexagonkt.serialization.jackson.json.Json
 import com.hexagonkt.serialization.parseMap
-import com.hexagonkt.serialization.serialize
 import com.hexagontk.todo.backend.domain.model.Task
 import com.hexagontk.todo.backend.domain.TaskStore
 import java.util.UUID
@@ -24,11 +25,13 @@ class Router(private val store: TaskStore) : HttpController {
     private val text = ContentType(TEXT_PLAIN)
 
     private val tasksHandler: HttpHandler = path("/tasks") {
+        after("*", callback = SerializeResponseCallback())
+
         get {
             val tasks = store.findAll()
-            val taskResponses = tasks.map { task -> task.convert(TaskRetrievalResponse::class) }
+            val taskResponses = tasks.map(::TaskRetrievalResponse)
 
-            ok(taskResponses.serialize(Json), contentType = json)
+            ok(taskResponses, contentType = json)
         }
 
         get("/{id}") {
@@ -37,8 +40,7 @@ class Router(private val store: TaskStore) : HttpController {
         }
 
         post {
-            val bodyString = request.bodyString()
-            val taskCreationRequest = bodyString.parseMap(Json).convert(TaskCreationRequest::class)
+            val taskCreationRequest = request.bodyObject(::TaskCreationRequest)
             val task = Task(
                 id = UUID.randomUUID().toString(),
                 title = taskCreationRequest.title,
@@ -84,14 +86,17 @@ class Router(private val store: TaskStore) : HttpController {
             )
         )
 
-        get(callback = UrlCallback("classpath:static/index.html"))
+//        get(callback = UrlCallback("classpath:static/index.html"))
+//        get("/main.js", callback = UrlCallback("classpath:static/main.js"))
+        get(callback = UrlCallback("file:./src/main/resources/static/index.html"))
+        get("/main.js", callback = UrlCallback("file:./src/main/resources/static/main.js"))
 
         use(tasksHandler)
     }
 
     private fun HttpContext.getTask(id: String, store: TaskStore): HttpContext {
-        val task = store.findOne(id)?.convert(TaskRetrievalResponse::class)
-        return if (task != null) ok(task.serialize(Json), contentType = json)
+        val task = store.findOne(id)?.let(::TaskRetrievalResponse)
+        return if (task != null) ok(task, contentType = json)
         else notFound("Task with id $id not found", contentType = text)
     }
 }
