@@ -4,6 +4,7 @@ import com.hexagonkt.core.media.APPLICATION_JSON
 import com.hexagonkt.http.client.jetty.JettyClientAdapter
 import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.NOT_FOUND_404
+import com.hexagonkt.rest.bodyObject
 import com.hexagonkt.rest.bodyObjects
 import com.hexagonkt.rest.tools.StateHttpClient
 import com.hexagontk.todo.backend.application
@@ -21,12 +22,15 @@ internal class RestIT : ITBase() {
             ContentType(APPLICATION_JSON)
         )
 
-        client.get("/tasks").bodyString().let { println(it) }
+        assert(client.get("/tasks").bodyObjects(::TaskRetrievalResponse).isEmpty())
         client.assertOk()
         client.get("/tasks/${UUID.randomUUID()}")
         client.assertStatus(NOT_FOUND_404)
         client.post("/tasks", TaskCreationRequest("A simple task"))
+        var t = client.response.bodyObject(::TaskRetrievalResponse)
         client.assertSuccess()
-        client.get("/tasks").bodyObjects(::TaskRetrievalResponse)
+        client.get(t.url)
+        client.assertSuccess()
+        assert(client.get("/tasks").bodyObjects(::TaskRetrievalResponse).isNotEmpty())
     }
 }

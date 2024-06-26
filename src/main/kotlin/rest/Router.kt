@@ -1,5 +1,6 @@
 package com.hexagontk.todo.backend.rest
 
+import com.hexagonkt.core.Jvm
 import com.hexagonkt.core.media.APPLICATION_JSON
 import com.hexagonkt.core.media.TEXT_PLAIN
 import com.hexagonkt.http.model.ContentType
@@ -20,6 +21,8 @@ class Router(private val store: TaskStore) : HttpController {
 
     private val json = ContentType(APPLICATION_JSON)
     private val text = ContentType(TEXT_PLAIN)
+    private val staticBase =
+        if (Jvm.systemFlag("DEV")) "file:./src/main/resources/static" else "classpath:static"
 
     private val tasksHandler: HttpHandler = path("/tasks") {
         after("*", callback = SerializeResponseCallback())
@@ -85,10 +88,8 @@ class Router(private val store: TaskStore) : HttpController {
             )
         )
 
-//        get(callback = UrlCallback("classpath:static/index.html"))
-//        get("/main.js", callback = UrlCallback("classpath:static/main.js"))
-        get(callback = UrlCallback("file:./src/main/resources/static/index.html"))
-        get("/main.js", callback = UrlCallback("file:./src/main/resources/static/main.js"))
+        get(callback = UrlCallback("$staticBase/index.html"))
+        get("/main.js", callback = UrlCallback("$staticBase/main.js"))
 
         use(tasksHandler)
     }
