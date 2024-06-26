@@ -6,6 +6,5 @@ data class Task(
     val order: Int? = null,
     val completed: Boolean? = false
 ) {
-//    val url = "${System.getenv("SERVICE_URL")}/tasks/$id"
     val url = "/tasks/$id"
 }

@@ -7,8 +7,8 @@ import com.hexagontk.todo.backend.domain.model.Task
 data class TaskRetrievalResponse(
     val url: String,
     val title: String,
-    val order: Int?,
-    val completed: Boolean?
+    val order: Int? = null,
+    val completed: Boolean? = null
 ) : Data<TaskRetrievalResponse> {
 
     constructor(task: Task) : this(
@@ -18,12 +18,20 @@ data class TaskRetrievalResponse(
         completed = task.completed
     )
 
-    override val data: Map<String, *> = fieldsMapOfNotNull(
-        TaskRetrievalResponse::url to url,
-        TaskRetrievalResponse::title to title,
-        TaskRetrievalResponse::order to order,
-        TaskRetrievalResponse::completed to completed,
+    constructor(data: Map<String, *>) : this(
+        url = data.requireString(TaskRetrievalResponse::url),
+        title = data.requireString(TaskCreationRequest::title),
+        order = data.getInt(TaskCreationRequest::order),
+        completed = data.getBoolean(TaskRetrievalResponse::completed)
     )
+
+    override val data: Map<String, *> =
+        fieldsMapOfNotNull(
+            TaskRetrievalResponse::url to url,
+            TaskRetrievalResponse::title to title,
+            TaskRetrievalResponse::order to order,
+            TaskRetrievalResponse::completed to completed,
+        )
 
     override fun copy(data: Map<String, *>): TaskRetrievalResponse =
         copy(
@@ -36,7 +44,7 @@ data class TaskRetrievalResponse(
 
 data class TaskCreationRequest(
     val title: String,
-    val order: Int?
+    val order: Int? = null
 ) : Data<TaskCreationRequest> {
 
     constructor(data: Map<String, *>) : this(
@@ -44,16 +52,39 @@ data class TaskCreationRequest(
         order = data.getInt(TaskCreationRequest::order),
     )
 
-    override val data: Map<String, *>
-        get() = TODO("Not yet implemented")
+    override val data: Map<String, *> =
+        fieldsMapOfNotNull(
+            TaskCreationRequest::title to title,
+            TaskCreationRequest::order to order,
+        )
 
-    override fun copy(data: Map<String, *>): TaskCreationRequest {
+    override fun copy(data: Map<String, *>): TaskCreationRequest =
         TODO("Not yet implemented")
-    }
 }
 
 data class TaskUpdateRequest(
-    val title: String?,
-    val order: Int?,
-    val completed: Boolean?
-)
+    val title: String? = null,
+    val order: Int? = null,
+    val completed: Boolean? = null
+) : Data<TaskUpdateRequest> {
+
+    constructor(data: Map<String, *>) : this(
+        title = data.getString(TaskUpdateRequest::title),
+        order = data.getInt(TaskUpdateRequest::order),
+        completed = data.getBoolean(TaskUpdateRequest::completed),
+    )
+
+    override val data: Map<String, *> =
+        fieldsMapOfNotNull(
+            TaskUpdateRequest::title to title,
+            TaskUpdateRequest::order to order,
+            TaskUpdateRequest::completed to completed,
+        )
+
+    override fun copy(data: Map<String, *>): TaskUpdateRequest =
+        copy(
+            title = data.getPath(TaskUpdateRequest::title),
+            order = data.getPath(TaskUpdateRequest::order),
+            completed = data.getPath(TaskUpdateRequest::completed)
+        )
+}

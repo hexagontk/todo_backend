@@ -1,6 +1,5 @@
 package com.hexagontk.todo.backend.rest
 
-import com.hexagonkt.converters.convert
 import com.hexagonkt.core.media.APPLICATION_JSON
 import com.hexagonkt.core.media.TEXT_PLAIN
 import com.hexagonkt.http.model.ContentType
@@ -13,8 +12,6 @@ import com.hexagonkt.http.server.callbacks.CorsCallback
 import com.hexagonkt.http.server.callbacks.UrlCallback
 import com.hexagonkt.rest.SerializeResponseCallback
 import com.hexagonkt.rest.bodyObject
-import com.hexagonkt.serialization.jackson.json.Json
-import com.hexagonkt.serialization.parseMap
 import com.hexagontk.todo.backend.domain.model.Task
 import com.hexagontk.todo.backend.domain.TaskStore
 import java.util.UUID
@@ -46,20 +43,21 @@ class Router(private val store: TaskStore) : HttpController {
                 title = taskCreationRequest.title,
                 order = taskCreationRequest.order
             )
+
             store.insertOne(task)
             getTask(task.id, store)
         }
 
         patch("/{id}") {
             val id = pathParameters.getValue("id")
-            val bodyString = request.bodyString()
-            val taskUpdateRequest = bodyString.parseMap(Json).convert(TaskUpdateRequest::class)
+            val taskUpdateRequest = request.bodyObject(::TaskUpdateRequest)
             store.findOne(id) ?: notFound("Task with id $id not found")
             val updates = mapOf(
                 Task::title.name to taskUpdateRequest.title,
                 Task::order.name to taskUpdateRequest.order,
                 Task::completed.name to taskUpdateRequest.completed
             )
+
             if (store.updateOne(id, updates)) getTask(id, store)
             else badRequest("Unable to update task with id $id", contentType = text)
         }
@@ -72,6 +70,7 @@ class Router(private val store: TaskStore) : HttpController {
         delete("/{id}") {
             val id = pathParameters.getValue("id")
             store.findOne(id) ?: notFound("Task with id $id not found")
+
             if (store.deleteOne(id)) ok()
             else badRequest("Unable to delete task with id $id", contentType = text)
         }
@@ -96,6 +95,7 @@ class Router(private val store: TaskStore) : HttpController {
 
     private fun HttpContext.getTask(id: String, store: TaskStore): HttpContext {
         val task = store.findOne(id)?.let(::TaskRetrievalResponse)
+
         return if (task != null) ok(task, contentType = json)
         else notFound("Task with id $id not found", contentType = text)
     }

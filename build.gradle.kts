@@ -8,6 +8,7 @@ plugins {
 val hexagonVersion = "3.6.0"
 val hexagonExtraVersion = "3.6.0"
 val logbackVersion = "1.5.6"
+val testcontainersVersion = "1.19.8"
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
 ext.set("modules", "java.xml,java.naming")
@@ -22,8 +23,15 @@ dependencies {
     implementation("com.hexagonkt:serialization_jackson_json:$hexagonVersion")
     implementation("com.hexagonkt:rest:$hexagonVersion")
     implementation("com.hexagonkt.extra:store_mongodb:$hexagonExtraVersion")
-    implementation("com.hexagonkt.extra:converters:$hexagonExtraVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
+    testImplementation("com.hexagonkt:http_client_jetty:$hexagonVersion")
+    testImplementation("com.hexagonkt:rest_tools:$hexagonVersion") {
+        exclude(module = "commons-codec")
+    }
+    testImplementation("org.testcontainers:mongodb:$testcontainersVersion") {
+        exclude(module = "commons-compress")
+    }
 }
 
 tasks.wrapper {
