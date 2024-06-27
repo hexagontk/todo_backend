@@ -45,7 +45,7 @@ tasks.register("buildImage", type = Exec::class) {
 
     environment(
         "REGISTRY" to (environment["REGISTRY"] ?: "k3d.localhost:5000/"),
-        "VERSION" to (environment["VERSION"] ?: version)
+        "VERSION" to version
     )
 }
 
@@ -55,7 +55,7 @@ tasks.register("pushImage", type = Exec::class) {
 
     environment(
         "REGISTRY" to (environment["REGISTRY"] ?: "k3d.localhost:5000/"),
-        "VERSION" to (environment["VERSION"] ?: version)
+        "VERSION" to version
     )
 }
 
