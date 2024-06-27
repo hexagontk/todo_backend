@@ -13,7 +13,7 @@ val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexago
 
 ext.set("modules", "java.xml,java.naming")
 ext.set("options", "-Xms32M -Xmx128m -XX:+UseNUMA")
-ext.set("applicationClass", "com.hexagontk.todo.backend.ApplicationKt")
+ext.set("applicationClass", "com.hexagontk.todo.backend.MainKt")
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")

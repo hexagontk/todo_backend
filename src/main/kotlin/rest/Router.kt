@@ -15,6 +15,9 @@ import com.hexagonkt.rest.SerializeResponseCallback
 import com.hexagonkt.rest.bodyObject
 import com.hexagontk.todo.backend.domain.model.Task
 import com.hexagontk.todo.backend.domain.TaskStore
+import com.hexagontk.todo.backend.rest.messages.TaskCreationRequest
+import com.hexagontk.todo.backend.rest.messages.TaskRetrievalResponse
+import com.hexagontk.todo.backend.rest.messages.TaskUpdateRequest
 import java.util.UUID
 
 class Router(private val store: TaskStore) : HttpController {

@@ -31,9 +31,3 @@ internal class Application {
     fun runtimePort(): Int =
         server.runtimePort
 }
-
-internal val application: Application by lazy { Application() }
-
-internal fun main() {
-    application.start()
-}
