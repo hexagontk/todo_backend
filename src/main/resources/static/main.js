@@ -1,6 +1,11 @@
 
 const http = new XMLHttpRequest();
 
+const tbody = document.querySelector("tbody#tasks");
+const template = document.querySelector("#todoRow");
+const titleInput = document.querySelector("#title");
+const orderInput = document.querySelector("#order");
+
 function httpSend(method, url, body, callback) {
     http.open(method, url);
     http.setRequestHeader('Content-type', 'application/json');
@@ -16,33 +21,41 @@ function httpPost(url, body, callback) {
     httpSend('POST', url, body, callback);
 }
 
-function add() {
-    let body = { title: 'a', order: 0 };
-    httpPost('/tasks', body, () => {
+function addTask(task) {
+    const clone = template.content.cloneNode(true);
+    const td = clone.querySelectorAll("td");
+    const input = clone.querySelectorAll("input");
+    td[0].textContent = task.title;
+    td[1].textContent = task.order;
+    input.checked = task.completed;
+    tbody.appendChild(clone);
+}
 
-        console.log(http.responseText)
+function add() {
+    const body = {
+        title: titleInput.value,
+        order: orderInput.valueAsNumber
+    };
+
+    httpPost('/tasks', body, () => {
+        titleInput.value = "";
+        orderInput.value = 0;
+
+        addTask(JSON.parse(http.responseText));
     });
 }
 
 function main() {
-    const tbody = document.querySelector("tbody#tasks");
-    const template = document.querySelector("#todoRow");
 
     httpGet('/tasks', null, () => {
-        let response = JSON.parse(http.responseText);
-        for (const tr of tbody.children) {
+        for (const tr of tbody.children)
             tr.remove();
-        }
 
-        for (const task of response) {
-            const clone = template.content.cloneNode(true);
-            let td = clone.querySelectorAll("td");
-            td[0].textContent = task.title;
-            td[1].textContent = task.order;
-            tbody.appendChild(clone);
-        }
+        const response = JSON.parse(http.responseText);
+        for (const task of response)
+            addTask(task);
 
-        console.log(http.responseText)
+        console.log(http.responseText);
     });
 }
 
