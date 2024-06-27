@@ -49,8 +49,8 @@ tasks.register("buildImage", type = Exec::class) {
     )
 }
 
-tasks.register("pushImage", type = Exec::class) {
-    dependsOn("jpackage")
+tasks.register("push", type = Exec::class) {
+    dependsOn("buildImage")
     commandLine("docker", "compose", "--profile", "local", "push")
 
     environment(
@@ -60,6 +60,15 @@ tasks.register("pushImage", type = Exec::class) {
 }
 
 tasks.register("up", type = Exec::class) {
-    dependsOn("buildImage")
-    commandLine("docker", "compose", "--profile", "local", "up")
+    dependsOn("push")
+    commandLine("docker", "compose", "--profile", "local", "up", "-d")
+
+    environment(
+        "REGISTRY" to (environment["REGISTRY"] ?: "k3d.localhost:5000/"),
+        "VERSION" to version
+    )
+}
+
+tasks.register("rm", type = Exec::class) {
+    commandLine("docker", "compose", "--profile", "local", "rm", "-sfv")
 }
