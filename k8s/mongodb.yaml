@@ -68,9 +68,7 @@ metadata:
     environment: local
 
 spec:
-  type: NodePort
   ports:
     - port: 27017
-      nodePort: 31000
   selector:
     io.kompose.service: mongodb

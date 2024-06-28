@@ -26,7 +26,7 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: k3d.localhost:5000/todo:1.0.0
+        - image: docker.io/jamming/todo:1.0.0
           name: todo
           env:
             - name: BIND_ADDRESS
@@ -57,9 +57,7 @@ metadata:
     type: backend
 
 spec:
-  type: NodePort
   ports:
     - port: 2010
-      nodePort: 31080
   selector:
     io.kompose.service: todo
