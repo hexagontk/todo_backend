@@ -19,7 +19,13 @@ jobs:
           key: "${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/*.properties') }}"
           restore-keys: "${{ runner.os }}-gradle-"
       - run: curl -s "https://get.sdkman.io?rcupdate=false" | bash
-      - run: |
+      - env:
+          DOCKER_IO_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_IO_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          REGISTRY: ${{ secrets.DOCKER_HUB_USERNAME }}
+        run: |
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdk env install
           ./gradlew jpackage
+          docker login --username "$DOCKER_HUB_USERNAME" --password "$DOCKER_HUB_PASSWORD"
+          ./gradlew push
