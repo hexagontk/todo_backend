@@ -1,14 +1,14 @@
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 
 plugins {
-    kotlin("jvm") version("2.0.0")
+    kotlin("jvm") version("2.0.10")
     id("org.graalvm.buildtools.native") version("0.10.2")
 }
 
-val hexagonVersion = "3.6.0"
+val hexagonVersion = "3.6.1"
 val hexagonExtraVersion = "3.6.0"
 val logbackVersion = "1.5.6"
-val testcontainersVersion = "1.19.8"
+val testcontainersVersion = "1.20.1"
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
 ext.set("modules", "java.xml,java.naming")
@@ -17,6 +17,7 @@ ext.set("applicationClass", "com.hexagontk.todo.backend.MainKt")
 
 apply(from = "$gradleScripts/kotlin.gradle")
 apply(from = "$gradleScripts/application.gradle")
+apply(from = "$gradleScripts/native.gradle")
 
 dependencies {
     implementation("com.hexagonkt:http_server_jetty:$hexagonVersion")
@@ -35,7 +36,7 @@ dependencies {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.8"
+    gradleVersion = "8.9"
     distributionType = ALL
 }
 
@@ -52,8 +53,8 @@ tasks.register("push", type = Exec::class) {
 }
 
 tasks.register("up", type = Exec::class) {
-    dependsOn("push")
-    commandLine("docker", "compose", "--profile", "local", "up", "-d")
+    dependsOn("buildImage")
+    commandLine("docker", "compose", "--profile", "local", "up")
     dockerEnvironment()
 }
 

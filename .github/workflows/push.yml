@@ -27,5 +27,5 @@ jobs:
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdk env install
           docker login --username "$DOCKER_HUB_USERNAME" --password "$DOCKER_HUB_PASSWORD"
-          ./gradlew jpackage
+
           ./gradlew push
