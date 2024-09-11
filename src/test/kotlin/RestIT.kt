@@ -6,7 +6,7 @@ import com.hexagonkt.http.model.ContentType
 import com.hexagonkt.http.model.NOT_FOUND_404
 import com.hexagonkt.rest.bodyObject
 import com.hexagonkt.rest.bodyObjects
-import com.hexagonkt.rest.tools.StateHttpClient
+import com.hexagonkt.rest.tools.HttpClientTool
 import com.hexagontk.todo.backend.application
 import com.hexagontk.todo.backend.rest.messages.TaskCreationRequest
 import com.hexagontk.todo.backend.rest.messages.TaskRetrievalResponse
@@ -18,7 +18,7 @@ import kotlin.test.assertEquals
 internal class RestIT : ITBase() {
 
     @Test fun `Non existing route returns a 404`() {
-        val client = StateHttpClient(
+        val client = HttpClientTool(
             JettyClientAdapter(),
             "http://localhost:${application.runtimePort()}",
             ContentType(APPLICATION_JSON)

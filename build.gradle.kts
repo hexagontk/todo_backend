@@ -1,13 +1,13 @@
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 
 plugins {
-    kotlin("jvm") version("2.0.10")
-    id("org.graalvm.buildtools.native") version("0.10.2")
+    kotlin("jvm") version("2.0.20")
+    id("org.graalvm.buildtools.native") version("0.10.3")
 }
 
-val hexagonVersion = "3.6.1"
+val hexagonVersion = "3.6.6"
 val hexagonExtraVersion = "3.6.0"
-val logbackVersion = "1.5.6"
+val logbackVersion = "1.5.8"
 val testcontainersVersion = "1.20.1"
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
@@ -36,7 +36,7 @@ dependencies {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.9"
+    gradleVersion = "8.10.1"
     distributionType = ALL
 }
 
