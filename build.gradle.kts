@@ -5,10 +5,10 @@ plugins {
     id("org.graalvm.buildtools.native") version("0.10.3")
 }
 
-val hexagonVersion = "3.6.6"
+val hexagonVersion = "3.7.0"
 val hexagonExtraVersion = "3.6.0"
 val logbackVersion = "1.5.8"
-val testcontainersVersion = "1.20.1"
+val testcontainersVersion = "1.20.2"
 val gradleScripts = "https://raw.githubusercontent.com/hexagontk/hexagon/$hexagonVersion/gradle"
 
 ext.set("modules", "java.xml,java.naming")
@@ -36,7 +36,7 @@ dependencies {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.10.1"
+    gradleVersion = "8.10.2"
     distributionType = ALL
 }
 
